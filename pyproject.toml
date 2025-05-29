@@ -5,6 +5,7 @@ description = "A GitHub template repository for Python"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "azure-functions>=1.23.0",
     "fastapi[standard]>=0.115.12",
 ]
 
