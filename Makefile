@@ -58,7 +58,7 @@ jupyterlab: ## run Jupyter Lab
 # ---
 DOCKER_REPO_NAME ?= ks6088ts
 DOCKER_IMAGE_NAME ?= template-fastapi
-DOCKER_COMMAND ?=
+DOCKER_COMMAND ?= fastapi run main.py --help
 
 # Tools
 TOOLS_DIR ?= /usr/local/bin
@@ -103,3 +103,20 @@ docs-serve: ## serve documentation
 
 .PHONY: ci-test-docs
 ci-test-docs: docs ## run CI test for documentation
+
+# ---
+# Project
+# ---
+
+.PHONY: run
+run: ## run FastAPI server
+	uv run fastapi run main.py \
+		--host 0.0.0.0 \
+		--port 8000
+
+.PHONY: dev
+dev: ## run FastAPI server in development mode
+	uv run fastapi dev main.py \
+		--host 0.0.0.0 \
+		--port 8000 \
+		--reload
