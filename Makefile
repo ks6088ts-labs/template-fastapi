@@ -120,3 +120,7 @@ dev: ## run FastAPI server in development mode
 		--host 0.0.0.0 \
 		--port 8000 \
 		--reload
+
+.PHONY: azure-functions
+azure-functions: ## run Azure Functions server
+	uv run func start
