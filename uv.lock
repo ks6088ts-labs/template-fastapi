@@ -1792,7 +1792,7 @@ wheels = [
 ]
 
 [[package]]
-name = "template-python"
+name = "template-fastapi"
 version = "0.0.1"
 source = { editable = "." }
 
