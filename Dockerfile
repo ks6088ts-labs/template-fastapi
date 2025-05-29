@@ -21,4 +21,4 @@ COPY . .
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-CMD ["python", "template_fastapi/core.py"]
+CMD ["fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "8000"]
