@@ -124,3 +124,7 @@ dev: ## run FastAPI server in development mode
 .PHONY: azure-functions
 azure-functions: ## run Azure Functions server
 	uv run func start
+
+.PHONY: mcp-insppector
+mcp-inspector: ## run MCP Inspector server
+	npx @modelcontextprotocol/inspector
