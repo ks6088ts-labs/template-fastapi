@@ -99,7 +99,9 @@ async def search_items(
     if q:
         q = q.lower()
         results = [
-            item for item in results if q in item.name.lower() or (item.description and q in item.description.lower())
+            item
+            for item in results
+            if q in item.name.lower() or (item.description is not None and q in item.description.lower())
         ]
 
     if min_price is not None:
