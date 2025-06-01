@@ -105,6 +105,27 @@ docs-serve: ## serve documentation
 ci-test-docs: docs ## run CI test for documentation
 
 # ---
+# Azure Functions
+# ---
+
+.PHONY: functions-start
+functions-start: ## start Azure Functions
+	uv run func start
+
+.PHONY: functions-publish
+functions-publish: ## publish Azure Functions
+	uv export --format requirements-txt --no-dev --no-hashes --output-file requirements.txt
+	@if [[ "$$OSTYPE" == "darwin"* ]]; then \
+		sed -i '' '/^-e \.$$/d' requirements.txt; \
+	elif [[ "$$OSTYPE" == "linux"* ]]; then \
+		sed -i '/^-e \.$$/d' requirements.txt; \
+	else \
+		echo "Removing '-e .' from requirements.txt is not supported on this OS. Please remove it manually." >&2; \
+		exit 1; \
+	fi
+	uv run func azure functionapp publish $(FUNCTIONS_APP_NAME)
+
+# ---
 # Project
 # ---
 
@@ -120,10 +141,6 @@ dev: ## run FastAPI server in development mode
 		--host 0.0.0.0 \
 		--port 8000 \
 		--reload
-
-.PHONY: azure-functions
-azure-functions: ## run Azure Functions server
-	uv run func start
 
 .PHONY: mcp-insppector
 mcp-inspector: ## run MCP Inspector server
