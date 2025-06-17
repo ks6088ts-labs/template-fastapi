@@ -30,6 +30,7 @@ if AZURE_CONNECTION_STRING:
 
     configure_azure_monitor(
         connection_string=AZURE_CONNECTION_STRING,
+        server_request_hook=server_request_hook,
     )
     FastAPIInstrumentor.instrument_app(app)
 
