@@ -3,10 +3,22 @@ Simple example of using FastAPI-MCP to add an MCP server to a FastAPI app.
 ref. https://github.com/tadata-org/fastapi_mcp/blob/v0.3.4/examples/shared/apps/items.py
 """
 
+from os import getenv
+
+from azure.monitor.opentelemetry import configure_azure_monitor
 from fastapi import FastAPI, HTTPException, Query
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from pydantic import BaseModel
 
 app = FastAPI()
+
+# If AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING exists, configure Azure Monitor
+AZURE_CONNECTION_STRING = getenv("AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING")
+if AZURE_CONNECTION_STRING:
+    configure_azure_monitor(
+        connection_string=AZURE_CONNECTION_STRING,
+    )
+    FastAPIInstrumentor.instrument_app(app)
 
 
 class Item(BaseModel):

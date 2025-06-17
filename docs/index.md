@@ -15,3 +15,8 @@
 - [FastAPI で作成した API エンドポイントをモデル コンテキスト プロトコル (MCP) ツールとして公開してみる](https://dev.classmethod.jp/articles/fastapi-api-mcp/)
 - [MCP Inspector > docs](https://modelcontextprotocol.io/docs/tools/inspector)
 - [MCP Inspector > codes](https://github.com/modelcontextprotocol/inspector)
+
+## Application Insights
+
+- [Application Insights の概要 - OpenTelemetry の可観測性](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/app-insights-overview)
+- [FastAPI のテレメトリデータを Azure Application Insights に送る](https://qiita.com/hoto17296/items/2f366dfabdbe3d1d4e97)
