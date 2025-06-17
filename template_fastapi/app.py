@@ -4,18 +4,30 @@ ref. https://github.com/tadata-org/fastapi_mcp/blob/v0.3.4/examples/shared/apps/
 """
 
 import random
+import uuid
 from os import getenv
 
 from azure.monitor.opentelemetry import configure_azure_monitor
 from fastapi import FastAPI, HTTPException, Query
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.trace import Span
 from pydantic import BaseModel
 
 app = FastAPI()
 
-# If AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING exists, configure Azure Monitor
-AZURE_CONNECTION_STRING = getenv("AZURE_APPLICATIONINSIGHTS_CONNECTION_STRING")
+# If APPLICATIONINSIGHTS_CONNECTION_STRING exists, configure Azure Monitor
+AZURE_CONNECTION_STRING = getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
 if AZURE_CONNECTION_STRING:
+
+    def server_request_hook(span: Span, scope: dict):
+        if span and span.is_recording():
+            try:
+                # Application Insights に送るデータにユーザ ID を追加する
+                user_id = uuid.uuid4().hex  # Replace with actual user ID retrieval logic
+                span.set_attribute("enduser.id", user_id)
+            except KeyError:
+                pass
+
     configure_azure_monitor(
         connection_string=AZURE_CONNECTION_STRING,
     )
@@ -162,3 +174,15 @@ async def flaky(failure_rate: int):
     return {
         "message": "Request succeeded",
     }
+
+
+# Add flaky API which raises an exception
+@app.get("/flaky/exception", tags=["flaky"], operation_id="flaky_exception")
+async def flaky_exception():
+    """
+    A flaky endpoint that always raises an exception.
+    """
+    raise HTTPException(
+        status_code=500,
+        detail="Simulated exception",
+    )
