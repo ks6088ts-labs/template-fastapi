@@ -3,6 +3,7 @@ Simple example of using FastAPI-MCP to add an MCP server to a FastAPI app.
 ref. https://github.com/tadata-org/fastapi_mcp/blob/v0.3.4/examples/shared/apps/items.py
 """
 
+import random
 from os import getenv
 
 from azure.monitor.opentelemetry import configure_azure_monitor
@@ -136,3 +137,28 @@ sample_items = [
 ]
 for item in sample_items:
     items_db[item.id] = item
+
+
+# Add flaky API which receives percentage of failure
+@app.get("/flaky/{failure_rate}", tags=["flaky"], operation_id="flaky")
+async def flaky(failure_rate: int):
+    """
+    A flaky endpoint that simulates a failure based on the provided failure rate.
+
+    The failure rate is a percentage (0-100) that determines the likelihood of failure.
+    """
+    if not (0 <= failure_rate <= 100):
+        raise HTTPException(
+            status_code=400,
+            detail="Failure rate must be between 0 and 100",
+        )
+
+    if random.randint(0, 100) < failure_rate:
+        raise HTTPException(
+            status_code=500,
+            detail="Simulated failure",
+        )
+
+    return {
+        "message": "Request succeeded",
+    }
