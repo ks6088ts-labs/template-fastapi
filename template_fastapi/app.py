@@ -9,9 +9,19 @@ from os import getenv
 
 from azure.monitor.opentelemetry import configure_azure_monitor
 from fastapi import FastAPI, HTTPException, Query
+from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import (
+    BatchSpanProcessor,
+    ConsoleSpanExporter,
+)
 from opentelemetry.trace import Span
 from pydantic import BaseModel
+
+trace.set_tracer_provider(TracerProvider())
+trace.get_tracer_provider().add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
+tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
 
@@ -187,3 +197,27 @@ async def flaky_exception():
         status_code=500,
         detail="Simulated exception",
     )
+
+
+# Add a heavy synchronous endpoint which receives milliseconds to sleep
+@app.get("/heavy_sync/{sleep_ms}", tags=["heavy"], operation_id="heavy_sync_with_sleep")
+async def heavy_sync_with_sleep(sleep_ms: int):
+    """
+    A heavy synchronous endpoint that sleeps for the specified number of milliseconds.
+
+    This simulates a long-running synchronous operation.
+    """
+    if sleep_ms < 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Sleep time must be a non-negative integer",
+        )
+
+    import time
+
+    with tracer.start_as_current_span("foo"):
+        print(f"Sleeping for {sleep_ms} milliseconds")
+        time.sleep(sleep_ms / 1000.0)
+    return {
+        "message": f"Slept for {sleep_ms} milliseconds",
+    }
