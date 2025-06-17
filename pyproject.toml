@@ -6,8 +6,10 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "azure-functions>=1.23.0",
+    "azure-monitor-opentelemetry>=1.6.10",
     "fastapi-mcp>=0.3.4",
     "fastapi[standard]>=0.115.12",
+    "opentelemetry-instrumentation-fastapi>=0.52b1",
 ]
 
 [project.optional-dependencies]
@@ -52,3 +54,7 @@ show_missing = true
 
 [tool.ty]
 environment = { python-version = "3.10" }
+
+[tool.ty.rules]
+unresolved-attribute = "ignore" # Ignore unresolved attributes in classes
+possibly-unbound-attribute = "ignore" # Ignore possibly unbound attributes in classes
