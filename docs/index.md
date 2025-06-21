@@ -6,6 +6,7 @@
 
 ## Azure Functions
 
+- [Azure Functions で OpenTelemetry を使用する](https://learn.microsoft.com/ja-jp/azure/azure-functions/opentelemetry-howto?tabs=app-insights&pivots=programming-language-python)
 - [Using FastAPI Framework with Azure Functions](https://learn.microsoft.com/en-us/samples/azure-samples/fastapi-on-azure-functions/fastapi-on-azure-functions/)
 - [ks6088ts-labs/azure-functions-python](https://github.com/ks6088ts-labs/azure-functions-python)
 
@@ -19,7 +20,12 @@
 ## Application Insights
 
 - [Application Insights の概要 - OpenTelemetry の可観測性](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/app-insights-overview)
+- [Azure Monitor OpenTelemetry を設定する](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/opentelemetry-configuration?tabs=python)
 - [open-telemetry/opentelemetry-python > Basic Trace](https://github.com/open-telemetry/opentelemetry-python/tree/main/docs/examples/basic_tracer)
 - [FastAPI のテレメトリデータを Azure Application Insights に送る](https://qiita.com/hoto17296/items/2f366dfabdbe3d1d4e97)
 - [【Azure Functions】 - Application Insights のログが表示されない問題](https://zenn.dev/headwaters/articles/ff19f7e1b99b44)
 - [opentelemetry-instrumentation-fastapi (python) から OpenTelemetry に入門する](https://zenn.dev/taxin/articles/opentelemetry-fast-api-instrumentation-basics)
+
+## OpenTelemetry
+
+- [Docs > Language APIs & SDKs > Python > Getting Started](https://opentelemetry.io/docs/languages/python/getting-started/)

@@ -9,20 +9,14 @@ from os import getenv
 
 from azure.monitor.opentelemetry import configure_azure_monitor
 from fastapi import FastAPI, HTTPException, Query
-from opentelemetry import trace
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import (
-    BatchSpanProcessor,
-    ConsoleSpanExporter,
-)
 from opentelemetry.trace import Span
 from pydantic import BaseModel
 
-trace.set_tracer_provider(TracerProvider())
-trace.get_tracer_provider().add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))
-tracer = trace.get_tracer(__name__)
+from template_fastapi.opentelemetry import get_meter, get_tracer
 
+tracer = get_tracer(__name__)
+meter = get_meter(__name__)
 app = FastAPI()
 
 # If APPLICATIONINSIGHTS_CONNECTION_STRING exists, configure Azure Monitor
@@ -40,6 +34,7 @@ if AZURE_CONNECTION_STRING:
 
     configure_azure_monitor(
         connection_string=AZURE_CONNECTION_STRING,
+        # enable_live_metrics=True,
         server_request_hook=server_request_hook,
     )
     FastAPIInstrumentor.instrument_app(app)
@@ -188,6 +183,7 @@ async def flaky(failure_rate: int):
 
 
 # Add flaky API which raises an exception
+@tracer.start_as_current_span("flaky_exception")
 @app.get("/flaky/exception", tags=["flaky"], operation_id="flaky_exception")
 async def flaky_exception():
     """
@@ -215,9 +211,29 @@ async def heavy_sync_with_sleep(sleep_ms: int):
 
     import time
 
-    with tracer.start_as_current_span("foo"):
+    with tracer.start_as_current_span("parent"):
         print(f"Sleeping for {sleep_ms} milliseconds")
         time.sleep(sleep_ms / 1000.0)
+        with tracer.start_as_current_span("child"):
+            print("Child span")
     return {
         "message": f"Slept for {sleep_ms} milliseconds",
     }
+
+
+# Add counter for dice rolls
+roll_counter = meter.create_counter(
+    "dice.rolls",
+    description="The number of rolls by roll value",
+)
+
+
+@app.get("/roll_dice", operation_id="roll_dice")
+async def roll_dice():
+    """
+    Simulate rolling a dice and record the roll in the meter.
+    """
+    with tracer.start_as_current_span("roll_dice"):
+        roll = random.randint(1, 6)
+        roll_counter.add(1, {"roll.value": str(roll)})
+    return roll
