@@ -2,6 +2,9 @@
   "IsEncrypted": false,
   "Values": {
     "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=YOUR_INSTRUMENTATION_KEY;IngestionEndpoint=https://japaneast-1.in.applicationinsights.azure.com/;LiveEndpoint=https://japaneast.livediagnostics.monitor.azure.com/;ApplicationId=YOUR_APPLICATION_ID",
+    "OTEL_RESOURCE_ATTRIBUTES": "service.namespace=my-namespace,service.instance.id=my-instance",
+    "OTEL_SERVICE_NAME": "my-helloworld-service",
+    "OTEL_TRACES_SAMPLER_ARG": "1",
     "FUNCTIONS_WORKER_RUNTIME": "python",
     "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
     "AzureWebJobsStorage": ""
