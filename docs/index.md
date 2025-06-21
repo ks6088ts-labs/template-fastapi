@@ -25,3 +25,7 @@
 - [FastAPI のテレメトリデータを Azure Application Insights に送る](https://qiita.com/hoto17296/items/2f366dfabdbe3d1d4e97)
 - [【Azure Functions】 - Application Insights のログが表示されない問題](https://zenn.dev/headwaters/articles/ff19f7e1b99b44)
 - [opentelemetry-instrumentation-fastapi (python) から OpenTelemetry に入門する](https://zenn.dev/taxin/articles/opentelemetry-fast-api-instrumentation-basics)
+
+## OpenTelemetry
+
+- [Docs > Language APIs & SDKs > Python > Getting Started](https://opentelemetry.io/docs/languages/python/getting-started/)
