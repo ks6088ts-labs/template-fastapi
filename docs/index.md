@@ -3,6 +3,7 @@
 ## FastAPI
 
 - [FastAPI](https://fastapi.tiangolo.com/)
+- [Settings and Environment Variables](https://fastapi.tiangolo.com/advanced/settings/)
 
 ## Azure Functions
 
