@@ -5,8 +5,8 @@ import csv
 
 import typer
 from azure.cosmos import CosmosClient, PartitionKey
-from langchain_azure_openai import AzureOpenAIEmbeddings
 from langchain_core.documents import Document
+from langchain_openai import AzureOpenAIEmbeddings
 from rich.console import Console
 
 from template_fastapi.settings.azure_cosmosdb import get_azure_cosmosdb_settings
@@ -139,7 +139,7 @@ def search(
     query_text = f"""
     SELECT TOP {k} r.id, r.name, r.description, r.price, r.tags
     FROM restaurants r
-    ORDER BY VECTOR_DISTANCE(r.vector, @queryVector)
+    ORDER BY VectorDistance(r.vector, @queryVector)
     """
 
     parameters = [{"name": "@queryVector", "value": query_embedding}]
