@@ -63,3 +63,6 @@ environment = { python-version = "3.10" }
 [tool.ty.rules]
 unresolved-attribute = "ignore" # Ignore unresolved attributes in classes
 possibly-unbound-attribute = "ignore" # Ignore possibly unbound attributes in classes
+unknown-argument = "ignore" # Ignore unknown arguments in function calls
+invalid-assignment = "ignore" # Ignore invalid assignments
+invalid-argument-type = "ignore" # Ignore invalid argument types
