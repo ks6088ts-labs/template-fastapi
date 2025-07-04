@@ -1,0 +1,9 @@
+{
+  "servers": {
+    // For debugging purpose, add a local MCP server
+    "template_fastapi": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
