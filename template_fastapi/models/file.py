@@ -1,16 +1,15 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
 
 class File(BaseModel):
     """ファイル情報を表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
-    
+
     name: str
-    size: Optional[int] = None
-    content_type: Optional[str] = None
-    last_modified: Optional[datetime] = None
-    url: Optional[str] = None
+    size: int | None = None
+    content_type: str | None = None
+    last_modified: datetime | None = None
+    url: str | None = None

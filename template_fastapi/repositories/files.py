@@ -1,7 +1,5 @@
-from typing import List, Optional
-
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.core.exceptions import ResourceNotFoundError
+from azure.storage.blob import BlobServiceClient, ContainerClient
 
 from template_fastapi.models.file import File
 from template_fastapi.settings.azure_blob_storage import get_azure_blob_storage_settings
@@ -35,7 +33,7 @@ class FileRepository:
             )
         return self._container_client
 
-    def list_files(self, prefix: Optional[str] = None) -> List[File]:
+    def list_files(self, prefix: str | None = None) -> list[File]:
         """ファイル一覧を取得する"""
         try:
             blobs = self.container_client.list_blobs(name_starts_with=prefix)
@@ -52,29 +50,29 @@ class FileRepository:
         except Exception as e:
             raise Exception(f"ファイル一覧の取得に失敗しました: {str(e)}")
 
-    def upload_file(self, file_name: str, file_data: bytes, content_type: Optional[str] = None) -> File:
+    def upload_file(self, file_name: str, file_data: bytes, content_type: str | None = None) -> File:
         """ファイルをアップロードする"""
         try:
             blob_client = self.container_client.get_blob_client(file_name)
             blob_client.upload_blob(
-                file_data,
-                overwrite=True,
-                content_settings={'content_type': content_type} if content_type else None
+                file_data, overwrite=True, content_settings={"content_type": content_type} if content_type else None
             )
-            
+
             # アップロードされたファイル情報を取得
             blob_properties = blob_client.get_blob_properties()
             return File(
                 name=blob_properties.name,
                 size=blob_properties.size,
-                content_type=blob_properties.content_settings.content_type if blob_properties.content_settings else None,
+                content_type=blob_properties.content_settings.content_type
+                if blob_properties.content_settings
+                else None,
                 last_modified=blob_properties.last_modified,
-                url=blob_client.url
+                url=blob_client.url,
             )
         except Exception as e:
             raise Exception(f"ファイルのアップロードに失敗しました: {str(e)}")
 
-    def upload_files(self, files: List[tuple[str, bytes, Optional[str]]]) -> List[File]:
+    def upload_files(self, files: list[tuple[str, bytes, str | None]]) -> list[File]:
         """複数のファイルを同時にアップロードする"""
         uploaded_files = []
         for file_name, file_data, content_type in files:
@@ -100,9 +98,11 @@ class FileRepository:
             return File(
                 name=blob_properties.name,
                 size=blob_properties.size,
-                content_type=blob_properties.content_settings.content_type if blob_properties.content_settings else None,
+                content_type=blob_properties.content_settings.content_type
+                if blob_properties.content_settings
+                else None,
                 last_modified=blob_properties.last_modified,
-                url=blob_client.url
+                url=blob_client.url,
             )
         except ResourceNotFoundError:
             raise Exception(f"ファイル '{file_name}' が見つかりません")
@@ -120,7 +120,7 @@ class FileRepository:
         except Exception as e:
             raise Exception(f"ファイルの削除に失敗しました: {str(e)}")
 
-    def delete_files(self, file_names: List[str]) -> List[str]:
+    def delete_files(self, file_names: list[str]) -> list[str]:
         """複数のファイルを同時に削除する"""
         deleted_files = []
         for file_name in file_names:

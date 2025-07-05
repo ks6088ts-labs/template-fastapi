@@ -114,6 +114,10 @@ az resource update \
   --set properties.disableLocalAuth=false
 ```
 
+### Azure Blob Storage
+
+- [クイック スタート: Python 用 Azure Blob Storage クライアント ライブラリ](https://learn.microsoft.com/ja-jp/azure/storage/blobs/storage-quickstart-blobs-python?tabs=connection-string%2Croles-azure-portal%2Csign-in-azure-cli&pivots=blob-storage-quickstart-scratch)
+
 ### Application Insights
 
 - [Application Insights の概要 - OpenTelemetry の可観測性](https://learn.microsoft.com/ja-jp/azure/azure-monitor/app/app-insights-overview)
