@@ -27,6 +27,8 @@
 ### Azure Cosmos DB
 
 - [VectorDistance() を使用したクエリによるベクトル検索を実行する](https://learn.microsoft.com/ja-jp/azure/cosmos-db/nosql/vector-search#perform-vector-search-with-queries-using-vectordistance)
+- [Azure Cosmos DB for NoSQL での改ページ](https://learn.microsoft.com/ja-jp/azure/cosmos-db/nosql/query/pagination)
+- [OFFSET LIMIT (NoSQL クエリ)](https://learn.microsoft.com/ja-jp/azure/cosmos-db/nosql/query/offset-limit)
 - [LangChain / Azure Cosmos DB No SQL](https://python.langchain.com/docs/integrations/vectorstores/azure_cosmos_db_no_sql/)
 
 ```shell
