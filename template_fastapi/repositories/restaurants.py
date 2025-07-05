@@ -17,7 +17,14 @@ class RestaurantRepository:
     """レストランデータを管理するリポジトリクラス"""
 
     def __init__(self):
-        self.container = self._setup_cosmos_client()
+        self._container = None
+
+    @property
+    def container(self):
+        """コンテナを遅延初期化するプロパティ"""
+        if self._container is None:
+            self._container = self._setup_cosmos_client()
+        return self._container
 
     def _setup_cosmos_client(self):
         """Azure Cosmos DBに接続するクライアントを設定する"""
