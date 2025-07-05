@@ -1,5 +1,35 @@
 # template-fastapi
 
+## Get started
+
+```shell
+# Install dependencies
+make install-deps-dev
+
+# Set up credentials
+cp .env.example .env
+# Edit .env to set your credentials
+```
+
+### Foodies Service
+
+```shell
+# Help
+uv run python scripts/foodies_restaurants.py --help
+
+# Import mock data
+uv run python scripts/foodies_restaurants.py import-data --csv-file ./datasets/foodies_restaurants.csv
+
+# Search restaurants
+uv run python scripts/foodies_restaurants.py search --query "sushi"
+
+# Find nearby restaurants
+uv run python scripts/foodies_restaurants.py find-nearby --latitude 35.681167 --longitude 139.767052 --distance 5.0
+
+# Run FastAPI server in development mode
+make dev
+```
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
