@@ -57,9 +57,9 @@ class RestaurantRepository:
             tags=item.get("tags", []),
         )
 
-    def list_restaurants(self, limit: int = 10) -> list[Restaurant]:
-        """レストラン一覧を取得する"""
-        query = f"SELECT TOP {limit} * FROM c"
+    def list_restaurants(self, limit: int = 10, offset: int = 0) -> list[Restaurant]:
+        """レストラン一覧を取得する（ページネーション対応）"""
+        query = f"SELECT * FROM c OFFSET {offset} LIMIT {limit}"
         items = list(self.container.query_items(query=query, enable_cross_partition_query=True))
         return [self._cosmos_item_to_restaurant(item) for item in items]
 

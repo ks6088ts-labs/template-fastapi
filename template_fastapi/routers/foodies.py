@@ -13,12 +13,15 @@ restaurant_repo = RestaurantRepository()
     tags=["foodies"],
     operation_id="list_foodies_restaurants",
 )
-async def list_foodies_restaurants(limit: int = Query(10, description="取得する最大件数")) -> list[Restaurant]:
+async def list_foodies_restaurants(
+    limit: int = Query(10, description="取得する最大件数"),
+    offset: int = Query(0, description="スキップする件数（ページネーション用）"),
+) -> list[Restaurant]:
     """
-    レストラン一覧を取得する
+    レストラン一覧を取得する（ページネーション対応）
     """
     try:
-        return restaurant_repo.list_restaurants(limit)
+        return restaurant_repo.list_restaurants(limit, offset)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"データの取得に失敗しました: {str(e)}")
 
