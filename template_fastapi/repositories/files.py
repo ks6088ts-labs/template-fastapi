@@ -55,7 +55,8 @@ class FileRepository:
         try:
             blob_client = self.container_client.get_blob_client(file_name)
             blob_client.upload_blob(
-                file_data, overwrite=True, content_settings={"content_type": content_type} if content_type else None
+                data=file_data,
+                overwrite=True,
             )
 
             # アップロードされたファイル情報を取得
