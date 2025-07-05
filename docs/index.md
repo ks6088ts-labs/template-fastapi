@@ -73,6 +73,37 @@ uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "fi
 uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "file3.pdf" --force
 ```
 
+### Speeches Service
+
+```shell
+# Help
+uv run python scripts/speeches.py --help
+
+# Create a new transcription job
+uv run python scripts/speeches.py create-transcription "https://example.com/audio.wav" --locale "ja-JP" --name "My Transcription"
+
+# Get transcription job status
+uv run python scripts/speeches.py get-transcription JOB_ID
+
+# Get transcription files
+uv run python scripts/speeches.py get-transcription-files JOB_ID
+
+# Get transcription result
+uv run python scripts/speeches.py get-transcription-result "https://example.com/result.json" --save "result.json"
+
+# List all transcription jobs
+uv run python scripts/speeches.py list-transcriptions
+
+# Wait for transcription completion
+uv run python scripts/speeches.py wait-for-completion JOB_ID --timeout 300 --interval 10
+
+# Delete transcription job
+uv run python scripts/speeches.py delete-transcription JOB_ID
+
+# Delete transcription job (without confirmation)
+uv run python scripts/speeches.py delete-transcription JOB_ID --force
+```
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
