@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
-from template_fastapi.database.items import items_db
 from template_fastapi.models.item import Item
+from template_fastapi.repositories.items import items_db
 
 router = APIRouter()
 

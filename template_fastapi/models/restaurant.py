@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class Restaurant(BaseModel):
-    id: int
+    id: str
     name: str
     description: str | None = None
     price: float
