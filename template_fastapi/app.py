@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.trace import Span
 
-from template_fastapi.routers import demos, foodies, games, items
+from template_fastapi.routers import demos, files, foodies, games, items
 
 app = FastAPI()
 
@@ -40,3 +40,4 @@ app.include_router(items.router)
 app.include_router(demos.router)
 app.include_router(games.router)
 app.include_router(foodies.router)
+app.include_router(files.router)

@@ -30,6 +30,49 @@ uv run python scripts/foodies_restaurants.py find-nearby --latitude 35.681167 --
 make dev
 ```
 
+### Files Service
+
+```shell
+# Help
+uv run python scripts/files.py --help
+
+# List all files
+uv run python scripts/files.py list-files
+
+# List files with prefix
+uv run python scripts/files.py list-files --prefix "images/"
+
+# Upload a single file
+uv run python scripts/files.py upload-file ./path/to/file.txt
+
+# Upload a single file with custom blob name
+uv run python scripts/files.py upload-file ./path/to/file.txt --name "custom-name.txt"
+
+# Upload multiple files
+uv run python scripts/files.py upload-multiple-files ./file1.txt ./file2.jpg ./file3.pdf
+
+# Download a file
+uv run python scripts/files.py download-file "file.txt"
+
+# Download a file to specific location
+uv run python scripts/files.py download-file "file.txt" --output "./downloads/file.txt"
+
+# Get file information
+uv run python scripts/files.py get-file-info "file.txt"
+
+# Delete a file (with confirmation)
+uv run python scripts/files.py delete-file "file.txt"
+
+# Delete a file (without confirmation)
+uv run python scripts/files.py delete-file "file.txt" --force
+
+# Delete multiple files
+uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "file3.pdf"
+
+# Delete multiple files (without confirmation)
+uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "file3.pdf" --force
+```
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
