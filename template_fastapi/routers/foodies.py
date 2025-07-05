@@ -104,13 +104,15 @@ async def delete_foodies_restaurant(restaurant_id: str) -> dict:
     operation_id="search_foodies_restaurants",
 )
 async def search_foodies_restaurants(
-    query: str, k: int = Query(3, description="取得する上位結果の数")
+    query: str,
+    k: int = Query(3, description="取得する上位結果の数"),
+    offset: int = Query(0, description="スキップする件数（ページネーション用）"),
 ) -> list[Restaurant]:
     """
-    キーワードによるレストランのベクトル検索を実行する
+    キーワードによるレストランのベクトル検索を実行する（ページネーション対応）
     """
     try:
-        return restaurant_repo.search_restaurants(query, k)
+        return restaurant_repo.search_restaurants(query, k, offset)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"検索に失敗しました: {str(e)}")
 
@@ -126,11 +128,12 @@ async def find_nearby_restaurants(
     longitude: float = Query(..., description="経度"),
     distance_km: float = Query(5.0, description="検索半径（キロメートル）"),
     limit: int = Query(10, description="取得する最大件数"),
+    offset: int = Query(0, description="スキップする件数（ページネーション用）"),
 ) -> list[Restaurant]:
     """
-    指定した位置の近くにあるレストランを検索する
+    指定した位置の近くにあるレストランを検索する（ページネーション対応）
     """
     try:
-        return restaurant_repo.find_nearby_restaurants(latitude, longitude, distance_km, limit)
+        return restaurant_repo.find_nearby_restaurants(latitude, longitude, distance_km, limit, offset)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"位置検索に失敗しました: {str(e)}")

@@ -138,16 +138,17 @@ class RestaurantRepository:
         """指定されたIDのレストランを削除する"""
         self.container.delete_item(item=restaurant_id, partition_key=restaurant_id)
 
-    def search_restaurants(self, query: str, k: int = 3) -> list[Restaurant]:
-        """キーワードによるレストランのベクトル検索を実行する"""
+    def search_restaurants(self, query: str, k: int = 3, offset: int = 0) -> list[Restaurant]:
+        """キーワードによるレストランのベクトル検索を実行する（ページネーション対応）"""
         # クエリテキストのベクトル埋め込みを生成
         query_embedding = self._get_embeddings(query)
 
-        # ベクトル検索クエリの実行
+        # ベクトル検索クエリの実行（オフセットとリミットを適用）
         query_text = f"""
-        SELECT TOP {k} *
+        SELECT *
         FROM c
         ORDER BY VectorDistance(c.vector, @queryVector)
+        OFFSET {offset} LIMIT {k}
         """
 
         parameters = [{"name": "@queryVector", "value": query_embedding}]
@@ -157,18 +158,19 @@ class RestaurantRepository:
         return [self._cosmos_item_to_restaurant(item) for item in items]
 
     def find_nearby_restaurants(
-        self, latitude: float, longitude: float, distance_km: float = 5.0, limit: int = 10
+        self, latitude: float, longitude: float, distance_km: float = 5.0, limit: int = 10, offset: int = 0
     ) -> list[Restaurant]:
-        """指定した位置の近くにあるレストランを検索する"""
+        """指定した位置の近くにあるレストランを検索する（ページネーション対応）"""
         # 地理空間クエリの実行（メートル単位で距離を指定）
         distance_meters = distance_km * 1000
         query_text = f"""
-        SELECT TOP {limit} *
+        SELECT *
         FROM c
         WHERE ST_DISTANCE(c.location, {{
             "type": "Point",
             "coordinates": [{longitude}, {latitude}]
         }}) < {distance_meters}
+        OFFSET {offset} LIMIT {limit}
         """
 
         items = list(self.container.query_items(query=query_text, enable_cross_partition_query=True))
