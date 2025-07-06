@@ -73,6 +73,44 @@ uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "fi
 uv run python scripts/files.py delete-multiple-files "file1.txt" "file2.jpg" "file3.pdf" --force
 ```
 
+### Speeches Service
+
+```shell
+AZURE_BLOB_STORAGE_CONTAINER_SAS_TOKEN="<your_sas_token>"
+AZURE_BLOB_STORAGE_CONTAINER_URL="https://<storage_account_name>.blob.core.windows.net/<container_name>"
+FILE_NAME="path/to/your/audio/file.wav"
+URL="${AZURE_BLOB_STORAGE_CONTAINER_URL}/${FILE_NAME}?${AZURE_BLOB_STORAGE_CONTAINER_SAS_TOKEN}"
+
+# Help
+uv run python scripts/speeches.py --help
+
+# Create a new transcription job
+uv run python scripts/speeches.py create-transcription "$URL" \
+  --locale "ja-JP" \
+  --name "My Transcription"
+
+# Get transcription job status
+uv run python scripts/speeches.py get-transcription "$JOB_ID"
+
+# Wait for transcription completion
+uv run python scripts/speeches.py wait-for-completion "$JOB_ID" --timeout 300 --interval 10
+
+# Get transcription files
+uv run python scripts/speeches.py get-transcription-files "$JOB_ID"
+
+# Get transcription result
+uv run python scripts/speeches.py get-transcription-result "https://<contentUrl>" --save "result.json"
+
+# List all transcription jobs
+uv run python scripts/speeches.py list-transcriptions
+
+# Delete transcription job
+uv run python scripts/speeches.py delete-transcription "$JOB_ID"
+
+# Delete transcription job (without confirmation)
+uv run python scripts/speeches.py delete-transcription "$JOB_ID" --force
+```
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
@@ -126,3 +164,7 @@ az resource update \
 - [FastAPI のテレメトリデータを Azure Application Insights に送る](https://qiita.com/hoto17296/items/2f366dfabdbe3d1d4e97)
 - [【Azure Functions】 - Application Insights のログが表示されない問題](https://zenn.dev/headwaters/articles/ff19f7e1b99b44)
 - [opentelemetry-instrumentation-fastapi (python) から OpenTelemetry に入門する](https://zenn.dev/taxin/articles/opentelemetry-fast-api-instrumentation-basics)
+
+### Azure AI Speech
+
+- [バッチ文字起こしとは](https://learn.microsoft.com/ja-jp/azure/ai-services/speech-service/batch-transcription)
