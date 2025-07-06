@@ -160,6 +160,7 @@ uv run python scripts/speeches.py delete-transcription "$JOB_ID" --force
 
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Settings and Environment Variables](https://fastapi.tiangolo.com/advanced/settings/)
+- [WebSockets](https://fastapi.tiangolo.com/advanced/websockets/)
 
 ## OpenTelemetry
 
