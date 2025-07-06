@@ -30,6 +30,44 @@ uv run python scripts/foodies_restaurants.py find-nearby --latitude 35.681167 --
 make dev
 ```
 
+### Chats Service
+
+```shell
+# Help
+uv run python scripts/chats.py --help
+
+# List all chat rooms
+uv run python scripts/chats.py list-rooms
+
+# Create a new chat room
+uv run python scripts/chats.py create-room "my-room" "My Room" --description "A room for my team"
+
+# Get chat room information
+uv run python scripts/chats.py get-room "general"
+
+# Get chat history
+uv run python scripts/chats.py get-history "general" --limit 50
+
+# List users in a room
+uv run python scripts/chats.py list-users "general"
+
+# Send a test message
+uv run python scripts/chats.py send-message "general" "test-user" "Hello, world!"
+
+# Clear chat history
+uv run python scripts/chats.py clear-history "general" --yes
+
+# Clean up old messages
+uv run python scripts/chats.py cleanup
+
+# View system statistics
+uv run python scripts/chats.py stats
+
+# Access chat web interface
+# Start the server: make dev
+# Open browser: http://localhost:8000/chats/
+```
+
 ### Files Service
 
 ```shell

@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.trace import Span
 
-from template_fastapi.routers import demos, files, foodies, games, items, speeches
+from template_fastapi.routers import chats, demos, files, foodies, games, items, speeches
 
 app = FastAPI()
 
@@ -38,6 +38,7 @@ if AZURE_CONNECTION_STRING:
 # Include routers
 app.include_router(items.router)
 app.include_router(demos.router)
+app.include_router(chats.router)
 app.include_router(games.router)
 app.include_router(foodies.router)
 app.include_router(files.router)

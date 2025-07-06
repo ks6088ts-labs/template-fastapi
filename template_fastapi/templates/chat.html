@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャットアプリケーション</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .join-form {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .join-form input {
+            width: 200px;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .join-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .join-form button:hover {
+            background-color: #0056b3;
+        }
+        .chat-area {
+            display: none;
+            height: 400px;
+            flex-direction: column;
+        }
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #eee;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .message.own {
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+        }
+        .message .username {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .message .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+        .message.own .timestamp {
+            color: #ccc;
+        }
+        .message-input {
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .message-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .message-input button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message-input button:hover {
+            background-color: #218838;
+        }
+        .status {
+            padding: 10px 20px;
+            background-color: #e9ecef;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .status.connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status.disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .users-list {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        .users-list strong {
+            color: #007bff;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>チャットアプリケーション</h1>
+            <p>リアルタイムチャットをお楽しみください</p>
+        </div>
+        
+        <div class="join-form" id="joinForm">
+            <h3>チャットに参加</h3>
+            <input type="text" id="username" placeholder="ユーザー名を入力" maxlength="50">
+            <input type="text" id="roomId" placeholder="ルームID (デフォルト: general)" value="general">
+            <button onclick="joinChat()">参加</button>
+            <div id="joinError" class="error" style="display: none;"></div>
+        </div>
+        
+        <div class="chat-area" id="chatArea">
+            <div class="status" id="status">接続中...</div>
+            <div class="messages" id="messages"></div>
+            <div class="message-input">
+                <input type="text" id="messageInput" placeholder="メッセージを入力..." maxlength="1000">
+                <button onclick="sendMessage()">送信</button>
+            </div>
+            <div class="users-list" id="usersList">
+                <strong>参加者:</strong> <span id="usersCount">0</span>人
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let websocket = null;
+        let username = null;
+        let roomId = null;
+        let userId = null;
+        let connected = false;
+
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function joinChat() {
+            const usernameInput = document.getElementById('username');
+            const roomIdInput = document.getElementById('roomId');
+            const errorDiv = document.getElementById('joinError');
+            
+            username = usernameInput.value.trim();
+            roomId = roomIdInput.value.trim() || 'general';
+            
+            if (!username) {
+                showError('ユーザー名を入力してください');
+                return;
+            }
+            
+            if (username.length > 50) {
+                showError('ユーザー名は50文字以内で入力してください');
+                return;
+            }
+            
+            userId = generateUserId();
+            connectWebSocket();
+        }
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/chats/${roomId}?user_id=${userId}&username=${encodeURIComponent(username)}`;
+            
+            websocket = new WebSocket(wsUrl);
+            
+            websocket.onopen = function(event) {
+                connected = true;
+                updateStatus('接続済み', 'connected');
+                document.getElementById('joinForm').style.display = 'none';
+                document.getElementById('chatArea').style.display = 'flex';
+                document.getElementById('messageInput').focus();
+            };
+            
+            websocket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                handleMessage(data);
+            };
+            
+            websocket.onclose = function(event) {
+                connected = false;
+                updateStatus('接続が切断されました', 'disconnected');
+                setTimeout(() => {
+                    if (!connected) {
+                        connectWebSocket();
+                    }
+                }, 5000);
+            };
+            
+            websocket.onerror = function(error) {
+                console.error('WebSocket Error:', error);
+                updateStatus('接続エラーが発生しました', 'disconnected');
+            };
+        }
+
+        function handleMessage(data) {
+            switch(data.type) {
+                case 'message':
+                    addMessage(data.message);
+                    break;
+                case 'user_joined':
+                    addSystemMessage(`${data.username} が参加しました`);
+                    updateUserCount(data.user_count);
+                    break;
+                case 'user_left':
+                    addSystemMessage(`${data.username} が退出しました`);
+                    updateUserCount(data.user_count);
+                    break;
+                case 'history':
+                    loadHistory(data.messages);
+                    break;
+                case 'error':
+                    showError(data.message);
+                    break;
+            }
+        }
+
+        function addMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message' + (message.user_id === userId ? ' own' : '');
+            
+            const timestamp = new Date(message.timestamp).toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="username">${escapeHtml(message.username)}</div>
+                <div>${escapeHtml(message.message)}</div>
+                <div class="timestamp">${timestamp}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function addSystemMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            messageDiv.style.background = '#fff3cd';
+            messageDiv.style.color = '#856404';
+            messageDiv.style.textAlign = 'center';
+            messageDiv.style.fontStyle = 'italic';
+            messageDiv.innerHTML = `<div>${escapeHtml(message)}</div>`;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function loadHistory(messages) {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = '';
+            
+            messages.forEach(message => {
+                addMessage(message);
+            });
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            
+            if (!message || !connected) return;
+            
+            if (message.length > 1000) {
+                showError('メッセージは1000文字以内で入力してください');
+                return;
+            }
+            
+            const data = {
+                type: 'message',
+                message: message
+            };
+            
+            websocket.send(JSON.stringify(data));
+            messageInput.value = '';
+        }
+
+        function updateStatus(message, className) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + (className || '');
+        }
+
+        function updateUserCount(count) {
+            document.getElementById('usersCount').textContent = count;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('joinError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // エンターキーでメッセージ送信
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // エンターキーでチャット参加
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                joinChat();
+            }
+        });
+
+        document.getElementById('roomId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                joinChat();
+            }
+        });
+    </script>
+</body>
+</html>
