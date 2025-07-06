@@ -1,12 +1,13 @@
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
 
 class TranscriptionStatus(str, Enum):
     """転写処理のステータス"""
+
     NOT_STARTED = "NotStarted"
     RUNNING = "Running"
     SUCCEEDED = "Succeeded"
@@ -15,7 +16,7 @@ class TranscriptionStatus(str, Enum):
 
 class TranscriptionJob(BaseModel):
     """転写ジョブの情報を表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
 
     id: str
@@ -24,12 +25,12 @@ class TranscriptionJob(BaseModel):
     created_date_time: datetime | None = None
     last_action_date_time: datetime | None = None
     self_url: str | None = None
-    links: Dict[str, str] | None = None
+    links: dict[str, str] | None = None
 
 
 class TranscriptionResult(BaseModel):
     """転写結果を表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
 
     source: str | None = None
@@ -42,31 +43,31 @@ class TranscriptionResult(BaseModel):
 
 class TranscriptionContent(BaseModel):
     """転写内容全体を表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
 
     source: str | None = None
     timestamp: datetime | None = None
     duration_in_ticks: int | None = None
-    combined_recognized_phrases: List[Dict[str, Any]] | None = None
-    recognized_phrases: List[Dict[str, Any]] | None = None
+    combined_recognized_phrases: list[dict[str, Any]] | None = None
+    recognized_phrases: list[dict[str, Any]] | None = None
 
 
 class BatchTranscriptionRequest(BaseModel):
     """バッチ転写リクエストを表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
 
-    content_urls: List[str]
+    content_urls: list[str]
     locale: str = "ja-JP"
     display_name: str | None = None
     model: str | None = None
-    properties: Dict[str, Any] | None = None
+    properties: dict[str, Any] | None = None
 
 
 class BatchTranscriptionResponse(BaseModel):
     """バッチ転写レスポンスを表すモデル"""
-    
+
     model_config = ConfigDict(extra="ignore")
 
     job_id: str

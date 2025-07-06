@@ -1,12 +1,12 @@
-from typing import List, Dict, Any
+from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
 from template_fastapi.models.speech import (
-    TranscriptionJob,
-    TranscriptionContent,
     BatchTranscriptionRequest,
     BatchTranscriptionResponse,
+    TranscriptionContent,
+    TranscriptionJob,
 )
 from template_fastapi.repositories.speeches import SpeechRepository
 
@@ -48,11 +48,11 @@ async def get_transcription_job(job_id: str) -> TranscriptionJob:
 
 @router.get(
     "/speeches/transcriptions/{job_id}/files",
-    response_model=List[Dict[str, Any]],
+    response_model=list[dict[str, Any]],
     tags=["speeches"],
     operation_id="get_transcription_files",
 )
-async def get_transcription_files(job_id: str) -> List[Dict[str, Any]]:
+async def get_transcription_files(job_id: str) -> list[dict[str, Any]]:
     """
     転写ジョブのファイル一覧を取得する
     """
@@ -69,8 +69,7 @@ async def get_transcription_files(job_id: str) -> List[Dict[str, Any]]:
     operation_id="get_transcription_result",
 )
 async def get_transcription_result(
-    job_id: str,
-    file_url: str = Query(..., description="転写結果ファイルのURL")
+    job_id: str, file_url: str = Query(..., description="転写結果ファイルのURL")
 ) -> TranscriptionContent:
     """
     転写結果を取得する
@@ -102,11 +101,11 @@ async def delete_transcription_job(job_id: str) -> dict:
 
 @router.get(
     "/speeches/transcriptions/",
-    response_model=List[TranscriptionJob],
+    response_model=list[TranscriptionJob],
     tags=["speeches"],
     operation_id="list_transcription_jobs",
 )
-async def list_transcription_jobs() -> List[TranscriptionJob]:
+async def list_transcription_jobs() -> list[TranscriptionJob]:
     """
     転写ジョブの一覧を取得する
     """
