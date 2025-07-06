@@ -22,7 +22,6 @@ def create_transcription(
     content_urls: list[str] = typer.Argument(..., help="転写するファイルのURL（複数指定可能）"),
     locale: str = typer.Option("ja-JP", "--locale", "-l", help="言語設定"),
     display_name: str = typer.Option(None, "--name", "-n", help="転写ジョブの表示名"),
-    model: str = typer.Option(None, "--model", "-m", help="使用するモデル"),
 ):
     """新しい転写ジョブを作成する"""
     console.print("[bold green]転写ジョブを作成します[/bold green]")
@@ -34,7 +33,6 @@ def create_transcription(
             content_urls=content_urls,
             locale=locale,
             display_name=display_name or "CLI Batch Transcription",
-            model=model,
         )
 
         response = speech_repo.create_transcription_job(request)
@@ -95,6 +93,8 @@ def get_transcription_files(
         table.add_column("名前", style="cyan")
         table.add_column("種類", style="green")
         table.add_column("リンク", style="yellow")
+        for file in files:
+            print(file)
 
         for file in files:
             table.add_row(

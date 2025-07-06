@@ -58,11 +58,12 @@ class BatchTranscriptionRequest(BaseModel):
 
     model_config = ConfigDict(extra="ignore")
 
-    content_urls: list[str]
+    content_urls: list[str] = [
+        "https://<storage_account_name>.blob.core.windows.net/<container_name>/<file1.m4a>?<sas_token>",
+        "https://<storage_account_name>.blob.core.windows.net/<container_name>/<file2.m4a>?<sas_token>",
+    ]
     locale: str = "ja-JP"
-    display_name: str | None = None
-    model: str | None = None
-    properties: dict[str, Any] | None = None
+    display_name: str | None = "My Batch Transcription"
 
 
 class BatchTranscriptionResponse(BaseModel):

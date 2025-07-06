@@ -4,9 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    azure_speech_key: str = "<YOUR_SPEECH_KEY>"
-    azure_speech_region: str = "<YOUR_SPEECH_REGION>"
-    azure_speech_endpoint: str = "https://<YOUR_SPEECH_REGION>.api.cognitive.microsoft.com/"
+    azure_ai_speech_api_key: str = "<YOUR_AZURE_AI_SPEECH_API_KEY>"
+    azure_ai_speech_endpoint: str = "https://<speech-api-name>.cognitiveservices.azure.com/"
 
     model_config = SettingsConfigDict(
         env_file=".env",

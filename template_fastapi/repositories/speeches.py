@@ -23,11 +23,10 @@ class SpeechRepository:
     """音声認識データを管理するリポジトリクラス"""
 
     def __init__(self):
-        self.speech_key = azure_speech_settings.azure_speech_key
-        self.speech_region = azure_speech_settings.azure_speech_region
-        self.speech_endpoint = azure_speech_settings.azure_speech_endpoint
+        self.speech_key = azure_speech_settings.azure_ai_speech_api_key
+        self.speech_endpoint = azure_speech_settings.azure_ai_speech_endpoint
         self.api_version = "v3.2-preview.2"
-        self.base_url = f"{self.speech_endpoint}speechtotext/{self.api_version}"
+        self.base_url = urljoin(self.speech_endpoint, f"speechtotext/{self.api_version}/")
 
         # セッションの設定
         self.session = requests.Session()
@@ -55,13 +54,9 @@ class SpeechRepository:
             "contentUrls": request.content_urls,
             "locale": request.locale,
             "displayName": request.display_name or "Batch Transcription",
-            "model": request.model,
-            "properties": request.properties or {},
+            "model": None,  # Whisperモデルを使用する場合はNone
+            "properties": {},
         }
-
-        # Whisperモデルのデフォルト設定
-        if not request.model:
-            payload["model"] = None  # Whisperモデルを使用する場合
 
         try:
             response = self.session.post(url, headers=self.headers, data=json.dumps(payload), timeout=30)
@@ -150,7 +145,6 @@ class SpeechRepository:
     def list_transcription_jobs(self) -> list[TranscriptionJob]:
         """転写ジョブの一覧を取得する"""
         url = urljoin(self.base_url, "transcriptions")
-
         try:
             response = self.session.get(url, headers=self.headers, timeout=30)
             response.raise_for_status()
