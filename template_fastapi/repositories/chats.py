@@ -67,8 +67,8 @@ class ChatRepository:
         self.users[user_id] = user
         self.connections[user_id] = websocket
 
-        # ルームのユーザー数を更新
-        self.rooms[room_id].user_count += 1
+        # ルームのユーザー数を更新 (動的な計算で正確性を保つ)
+        self.rooms[room_id].user_count = len(self.get_room_users(room_id))
 
         return user
 
@@ -80,14 +80,14 @@ class ChatRepository:
         user = self.users[user_id]
         room_id = user.room_id
 
-        # ルームのユーザー数を減らす
-        if room_id in self.rooms:
-            self.rooms[room_id].user_count -= 1
-
         # ユーザー情報を削除
         del self.users[user_id]
         if user_id in self.connections:
             del self.connections[user_id]
+
+        # ルームのユーザー数を更新 (動的な計算で正確性を保つ)
+        if room_id in self.rooms:
+            self.rooms[room_id].user_count = len(self.get_room_users(room_id))
 
     def add_message(self, user_id: str, message: str, room_id: str) -> ChatMessage:
         """メッセージを追加"""

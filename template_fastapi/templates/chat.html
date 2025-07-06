@@ -244,6 +244,9 @@
                     addSystemMessage(`${data.username} が退出しました`);
                     updateUserCount(data.user_count);
                     break;
+                case 'user_count':
+                    updateUserCount(data.user_count);
+                    break;
                 case 'history':
                     loadHistory(data.messages);
                     break;

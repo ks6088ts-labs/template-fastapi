@@ -118,20 +118,31 @@ async def websocket_endpoint(
             chat_repository.create_room(room_id, f"Room {room_id}", f"Chat room {room_id}")
 
         # ユーザーをルームに参加させる
-        _ = chat_repository.join_room(user_id, username, room_id, websocket)
+        user = chat_repository.join_room(user_id, username, room_id, websocket)
+
+        # 現在のユーザー数を取得
+        current_user_count = len(chat_repository.get_room_users(room_id))
 
         # 既存のメッセージ履歴を送信
         history = chat_repository.get_chat_history(room_id, chat_settings.chat_max_history_messages)
         await websocket.send_text(
-            json.dumps({"type": "history", "messages": [msg.model_dump() for msg in history.messages]})
+            json.dumps(
+                {"type": "history", "messages": [msg.model_dump(mode="json") for msg in history.messages]},
+                default=str,
+            )
         )
 
-        # 他のユーザーに参加通知
+        # 参加したユーザーに現在のユーザー数を送信
+        await websocket.send_text(
+            json.dumps({"type": "user_count", "user_count": current_user_count})
+        )
+
+        # 他のユーザーに参加通知を送信
         room_connections = chat_repository.get_user_connections(room_id)
         join_message = {
             "type": "user_joined",
             "username": username,
-            "user_count": len(chat_repository.get_room_users(room_id)),
+            "user_count": current_user_count,
         }
 
         for connection in room_connections:
@@ -170,11 +181,11 @@ async def websocket_endpoint(
 
                     # ルームの全ユーザーにメッセージを送信
                     room_connections = chat_repository.get_user_connections(room_id)
-                    message_payload = {"type": "message", "message": chat_message.model_dump()}
+                    message_payload = {"type": "message", "message": chat_message.model_dump(mode="json")}
 
                     for connection in room_connections:
                         try:
-                            await connection.send_text(json.dumps(message_payload))
+                            await connection.send_text(json.dumps(message_payload, default=str))
                         except:  # noqa: E722
                             pass
 
@@ -197,14 +208,18 @@ async def websocket_endpoint(
         try:
             old_user = chat_repository.get_user(user_id)
             if old_user:
+                old_username = old_user.username
                 chat_repository.leave_room(user_id)
+
+                # 退出後の正確なユーザー数を取得
+                current_user_count = len(chat_repository.get_room_users(room_id))
 
                 # 他のユーザーに退出通知
                 room_connections = chat_repository.get_user_connections(room_id)
                 leave_message = {
                     "type": "user_left",
-                    "username": old_user.username,
-                    "user_count": len(chat_repository.get_room_users(room_id)),
+                    "username": old_username,
+                    "user_count": current_user_count,
                 }
 
                 for connection in room_connections:
