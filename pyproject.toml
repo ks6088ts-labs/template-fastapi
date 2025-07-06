@@ -16,6 +16,7 @@ dependencies = [
     "opentelemetry-instrumentation-fastapi>=0.52b1",
     "pydantic-settings>=2.10.1",
     "typer>=0.16.0",
+    "websockets>=15.0.1",
 ]
 
 [project.optional-dependencies]
