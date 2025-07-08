@@ -1,57 +1,41 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+from template_fastapi.repositories.chats import ChatRepository
+from template_fastapi.settings.chats import get_chats_settings
 
 router = APIRouter()
-
-
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: list[WebSocket] = []
-
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
-
-
-manager = ConnectionManager()
+templates = Jinja2Templates(directory="template_fastapi/templates")
+chat_repository = ChatRepository()
 
 
 @router.get(
     "/chats/",
     tags=["chats"],
 )
-async def get():
-    # read the HTML file
-    try:
-        with open("template_fastapi/templates/chats.html") as file:
-            html = file.read()
-    except FileNotFoundError:
-        html = "<h1>Chat page not found</h1>"
-    except Exception as e:
-        html = f"<h1>Error reading chat page: {str(e)}</h1>"
-    return HTMLResponse(html)
+async def get(request: Request):
+    """Get the chat page with configurable WebSocket URL."""
+    settings = get_chats_settings()
+    return templates.TemplateResponse(
+        "chats.html",
+        {
+            "request": request,
+            "websocket_url": settings.chats_websocket_url,
+        },
+    )
 
 
 @router.websocket(
     "/ws/{client_id}",
 )
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    await manager.connect(websocket)
+    """WebSocket endpoint for chat functionality."""
+    await chat_repository.manager.connect(websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            await chat_repository.handle_client_message(data, websocket, client_id)
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
+        chat_repository.manager.disconnect(websocket)
+        await chat_repository.handle_client_disconnect(client_id)
