@@ -34,8 +34,15 @@ class ChatRepository:
 
     async def handle_client_message(self, data: str, websocket: WebSocket, client_id: int):
         """Handle a message from a client."""
-        await self.manager.send_personal_message(f"You wrote: {data}", websocket)
-        await self.manager.broadcast(f"Client #{client_id} says: {data}")
+        # await self.manager.send_personal_message(f"You wrote: {data}", websocket)
+
+        # client_id が一致する client 以外にのみ data を送信する
+        for connection in self.manager.active_connections:
+            if connection != websocket:
+                await self.manager.send_personal_message(f"Client #{client_id} says: {data}", connection)
+
+        # もし全クライアントにブロードキャストしたい場合は以下の行を有効にしてください
+        # await self.manager.broadcast(f"Client #{client_id} says: {data}")
 
     async def handle_client_disconnect(self, client_id: int):
         """Handle a client disconnect."""
