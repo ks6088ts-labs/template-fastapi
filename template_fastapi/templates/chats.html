@@ -2,33 +2,310 @@
 <html>
     <head>
         <title>Chat</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .chat-header {
+                background: rgba(255, 255, 255, 0.95);
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(10px);
+            }
+
+            .chat-header h1 {
+                color: #333;
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .user-id {
+                color: #666;
+                font-size: 0.9rem;
+            }
+
+            .chat-container {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .message {
+                display: flex;
+                align-items: flex-end;
+                animation: fadeInUp 0.3s ease-out;
+            }
+
+            .message.own {
+                justify-content: flex-end;
+            }
+
+            .message.other {
+                justify-content: flex-start;
+            }
+
+            .message-bubble {
+                max-width: 70%;
+                padding: 0.75rem 1rem;
+                border-radius: 1.5rem;
+                position: relative;
+                word-wrap: break-word;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .message.own .message-bubble {
+                background: #007AFF;
+                color: white;
+                border-bottom-right-radius: 0.5rem;
+            }
+
+            .message.other .message-bubble {
+                background: #E9E9EB;
+                color: #333;
+                border-bottom-left-radius: 0.5rem;
+            }
+
+            .message-time {
+                font-size: 0.7rem;
+                color: rgba(255, 255, 255, 0.7);
+                margin: 0.25rem 0.5rem;
+            }
+
+            .message.other .message-time {
+                color: #999;
+            }
+
+            .input-container {
+                background: rgba(255, 255, 255, 0.95);
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .message-input {
+                flex: 1;
+                padding: 0.75rem 1rem;
+                border: 2px solid #E9E9EB;
+                border-radius: 2rem;
+                font-size: 1rem;
+                outline: none;
+                transition: all 0.3s ease;
+            }
+
+            .message-input:focus {
+                border-color: #007AFF;
+                box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+            }
+
+            .send-button {
+                width: 3rem;
+                height: 3rem;
+                background: #007AFF;
+                border: none;
+                border-radius: 50%;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .send-button:hover {
+                background: #0056CC;
+                transform: scale(1.05);
+            }
+
+            .send-button:active {
+                transform: scale(0.95);
+            }
+
+            .send-button.sending {
+                animation: pulse 1s infinite;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+
+            .typing-indicator {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                background: #E9E9EB;
+                border-radius: 1.5rem;
+                border-bottom-left-radius: 0.5rem;
+                max-width: 70%;
+                animation: fadeInUp 0.3s ease-out;
+            }
+
+            .typing-dot {
+                width: 0.5rem;
+                height: 0.5rem;
+                background: #999;
+                border-radius: 50%;
+                animation: typing 1.5s infinite;
+            }
+
+            .typing-dot:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .typing-dot:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+
+            @keyframes typing {
+                0%, 60%, 100% {
+                    transform: translateY(0);
+                    opacity: 0.5;
+                }
+                30% {
+                    transform: translateY(-10px);
+                    opacity: 1;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .message-bubble {
+                    max-width: 85%;
+                }
+
+                .chat-header h1 {
+                    font-size: 1.2rem;
+                }
+            }
+        </style>
     </head>
     <body>
-        <h1>WebSocket Chat</h1>
-        <h2>Your ID: <span id="ws-id"></span></h2>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
+        <div class="chat-header">
+            <h1>💬 WebSocket Chat</h1>
+            <div class="user-id">Your ID: <span id="ws-id"></span></div>
+        </div>
+
+        <div class="chat-container" id="chat-container">
+        </div>
+
+        <form class="input-container" onsubmit="sendMessage(event)">
+            <input type="text" id="messageText" class="message-input" placeholder="メッセージを入力..." autocomplete="off"/>
+            <button type="submit" class="send-button" id="send-button">
+                <span>➤</span>
+            </button>
         </form>
-        <ul id='messages'>
-        </ul>
+
         <script>
             var client_id = Date.now()
             document.querySelector("#ws-id").textContent = client_id;
             var ws = new WebSocket(`{{ websocket_url }}/ws/${client_id}`);
+            var chatContainer = document.getElementById('chat-container');
+            var sendButton = document.getElementById('send-button');
+
             ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
+                addMessage(event.data, false);
             };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
+
+            function addMessage(text, isOwn) {
+                var messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isOwn ? 'own' : 'other'}`;
+
+                var bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.textContent = text;
+
+                var time = document.createElement('div');
+                time.className = 'message-time';
+                time.textContent = new Date().toLocaleTimeString('ja-JP', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                messageDiv.appendChild(bubble);
+                messageDiv.appendChild(time);
+                chatContainer.appendChild(messageDiv);
+
+                // スクロールを一番下に
+                chatContainer.scrollTop = chatContainer.scrollHeight;
             }
+
+            function sendMessage(event) {
+                event.preventDefault();
+                var input = document.getElementById("messageText");
+                var message = input.value.trim();
+
+                if (message) {
+                    // 送信エフェクト
+                    sendButton.classList.add('sending');
+
+                    // 自分のメッセージを即座に表示
+                    addMessage(message, true);
+
+                    // WebSocketで送信
+                    ws.send(message);
+
+                    // 入力フィールドをクリア
+                    input.value = '';
+
+                    // 送信エフェクトを解除
+                    setTimeout(() => {
+                        sendButton.classList.remove('sending');
+                    }, 500);
+                }
+            }
+
+            // Enterキーでの送信
+            document.getElementById("messageText").addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage(e);
+                }
+            });
+
+            // 接続時のウェルカムメッセージ
+            ws.onopen = function() {
+                setTimeout(() => {
+                    addMessage("チャットに接続しました！ 🎉", false);
+                }, 500);
+            };
         </script>
     </body>
 </html>
