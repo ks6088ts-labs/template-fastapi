@@ -88,7 +88,7 @@ class MicrosoftGraphSitesRepository:
         except Exception as e:
             raise Exception(f"ファイルのアップロードに失敗しました: {str(e)}")
 
-    def upload_files(self, files: list[tuple[str, bytes, str]], folder_path: str = "") -> list[File]:
+    def upload_files(self, files: list[tuple[str, bytes, str | None]], folder_path: str = "") -> list[File]:
         """複数のファイルを同時にアップロードする"""
         uploaded_files = []
         for file_name, file_data, content_type in files:
