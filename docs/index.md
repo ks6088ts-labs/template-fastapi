@@ -169,3 +169,72 @@ az resource update \
 ### Azure AI Speech
 
 - [バッチ文字起こしとは](https://learn.microsoft.com/ja-jp/azure/ai-services/speech-service/batch-transcription)
+
+### Microsoft Graph Sites Service
+
+Microsoft Graph Sites サービスは、SharePoint Online のファイルを操作するためのサービスです。
+
+```shell
+# Help
+uv run python scripts/msgraphs_sites.py --help
+
+# List files in SharePoint site
+uv run python scripts/msgraphs_sites.py list-files
+
+# List files in specific folder
+uv run python scripts/msgraphs_sites.py list-files --folder "Documents"
+
+# List files in JSON format
+uv run python scripts/msgraphs_sites.py list-files --format json
+
+# Upload a single file
+uv run python scripts/msgraphs_sites.py upload-file "local_file.txt"
+
+# Upload file to specific folder
+uv run python scripts/msgraphs_sites.py upload-file "local_file.txt" --folder "Documents"
+
+# Upload file with custom name
+uv run python scripts/msgraphs_sites.py upload-file "local_file.txt" --name "renamed_file.txt"
+
+# Upload multiple files
+uv run python scripts/msgraphs_sites.py upload-files "file1.txt" "file2.txt" "file3.txt"
+
+# Upload multiple files to specific folder
+uv run python scripts/msgraphs_sites.py upload-files "file1.txt" "file2.txt" --folder "Documents"
+
+# Download a file
+uv run python scripts/msgraphs_sites.py download-file "remote_file.txt"
+
+# Download file from specific folder
+uv run python scripts/msgraphs_sites.py download-file "remote_file.txt" --folder "Documents"
+
+# Download file with custom output path
+uv run python scripts/msgraphs_sites.py download-file "remote_file.txt" --output "downloaded_file.txt"
+
+# Get file information
+uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt"
+
+# Get file information from specific folder
+uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt" --folder "Documents"
+
+# Get file information in JSON format
+uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt" --format json
+
+# Delete a file
+uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt"
+
+# Delete file from specific folder
+uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt" --folder "Documents"
+
+# Delete file without confirmation
+uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt" --force
+
+# Delete multiple files
+uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" "file3.txt"
+
+# Delete multiple files from specific folder
+uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" --folder "Documents"
+
+# Delete multiple files without confirmation
+uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" --force
+```

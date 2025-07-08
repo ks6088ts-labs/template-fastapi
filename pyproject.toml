@@ -13,6 +13,7 @@ dependencies = [
     "fastapi[standard]>=0.115.12",
     "langchain-community>=0.3.27",
     "langchain-openai>=0.3.27",
+    "msgraph-sdk>=1.9.0",
     "opentelemetry-instrumentation-fastapi>=0.52b1",
     "pydantic-settings>=2.10.1",
     "typer>=0.16.0",
