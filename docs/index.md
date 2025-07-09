@@ -111,6 +111,31 @@ uv run python scripts/speeches.py delete-transcription "$JOB_ID"
 uv run python scripts/speeches.py delete-transcription "$JOB_ID" --force
 ```
 
+## Microsoft Graph API
+
+- [Build Python apps with Microsoft Graph](https://learn.microsoft.com/en-us/graph/tutorials/python?tabs=aad)
+
+### Fundamentals
+
+```shell
+# Help
+uv run python scripts/microsoft_graphs.py --help
+
+# Get access token
+uv run python scripts/microsoft_graphs.py get-access-token
+
+# Get my profile
+uv run python scripts/microsoft_graphs.py get-my-profile \
+  --access-token $ACCESS_TOKEN \
+  --expires-on $EXPIRES_ON
+
+# Get SharePoint sites
+uv run python scripts/microsoft_graphs.py get-sites \
+  --site-id $SITE_ID \
+  --access-token $ACCESS_TOKEN \
+  --expires-on $EXPIRES_ON
+```
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
