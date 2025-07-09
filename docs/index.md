@@ -194,3 +194,27 @@ az resource update \
 ### Azure AI Speech
 
 - [バッチ文字起こしとは](https://learn.microsoft.com/ja-jp/azure/ai-services/speech-service/batch-transcription)
+
+### Azure AI Foundry
+
+- [Quickstart: Create a new agent](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quickstart?pivots=programming-language-python-azure)
+- [Deep Research tool (preview)](https://learn.microsoft.com/en-us/azure/ai-foundry/agents/quickstart?pivots=programming-language-python-azure)
+
+#### CLI 実行例
+
+```bash
+# エージェントを作成
+python scripts/agents.py create-agent "研究アシスタント" --description "研究をサポートするAIアシスタント" --instructions "あなたは研究者をサポートするAIアシスタントです。質問に対して詳細で正確な回答を提供してください。"
+
+# エージェント一覧を取得
+python scripts/agents.py list-agents
+
+# エージェントの詳細を取得
+python scripts/agents.py get-agent <agent_id>
+
+# エージェントとチャット
+python scripts/agents.py chat <agent_id> "機械学習の最新トレンドについて教えてください"
+
+# エージェントを削除
+python scripts/agents.py delete-agent <agent_id>
+```
