@@ -115,5 +115,44 @@ def get_access_token():
         console.print(f"[bold red]エラー[/bold red]: {str(e)}")
 
 
+@app.command()
+def get_sites(
+    site_id: str | None = typer.Option(None, "--site-id", "-s", help="取得するサイトの ID（省略時は全サイト）"),
+    access_token: str | None = typer.Option(None, "--access-token", "-a", help="アクセストークンを指定して認証する"),
+    expires_on: int | None = typer.Option(
+        None, "--expires-on", "-e", help="アクセストークンの有効期限を指定（Unix時間）"
+    ),
+):
+    """SharePoint サイトの情報を取得する"""
+    console.print("[bold green]SharePoint サイト[/bold green]の情報を取得します")
+
+    async def _get_sites():
+        try:
+            client = get_graph_client(access_token=access_token, expires_on=expires_on)
+
+            if site_id:
+                site = await client.sites.by_site_id(site_id).get()
+                sites = [site]
+            else:
+                sites_response = await client.sites.get()
+                sites = sites_response.value if sites_response.value else []
+
+            # テーブルで表示
+            table = Table(title="SharePoint サイト")
+            table.add_column("ID", style="cyan")
+            table.add_column("名前", style="green")
+            table.add_column("URL", style="blue")
+
+            for site in sites:
+                table.add_row(site.id, site.name, site.web_url)
+
+            console.print(table)
+
+        except Exception as e:
+            console.print(f"[bold red]エラー[/bold red]: {str(e)}")
+
+    asyncio.run(_get_sites())
+
+
 if __name__ == "__main__":
     app()

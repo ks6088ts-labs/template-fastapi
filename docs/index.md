@@ -128,6 +128,12 @@ uv run python scripts/microsoft_graphs.py get-access-token
 uv run python scripts/microsoft_graphs.py get-my-profile \
   --access-token $ACCESS_TOKEN \
   --expires-on $EXPIRES_ON
+
+# Get SharePoint sites
+uv run python scripts/microsoft_graphs.py get-sites \
+  --site-id $SITE_ID \
+  --access-token $ACCESS_TOKEN \
+  --expires-on $EXPIRES_ON
 ```
 
 ## MCP
