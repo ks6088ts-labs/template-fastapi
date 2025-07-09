@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from azure.ai.agents.models import CodeInterpreterTool
 from azure.ai.projects import AIProjectClient
 from azure.identity import DefaultAzureCredential
 
@@ -10,8 +11,13 @@ from template_fastapi.models.agent import (
     AgentStatus,
     ChatRequest,
     ChatResponse,
+    ThreadListResponse,
+    ThreadRequest,
+    ThreadResponse,
 )
 from template_fastapi.settings.azure_ai_foundry import get_azure_ai_foundry_settings
+
+code_interpreter = CodeInterpreterTool()
 
 
 class AgentRepository:
@@ -20,7 +26,7 @@ class AgentRepository:
     def __init__(self):
         self.settings = get_azure_ai_foundry_settings()
         self.client = AIProjectClient(
-            self.settings.azure_ai_foundry_project_connection_string,
+            endpoint=self.settings.azure_ai_foundry_project_endpoint,
             credential=DefaultAzureCredential(),
         )
 
@@ -32,7 +38,7 @@ class AgentRepository:
                 name=request.name,
                 description=request.description,
                 instructions=request.instructions,
-                tools=request.tools or [],
+                tools=code_interpreter.definitions,
             )
 
             now = datetime.now().isoformat()
@@ -72,15 +78,17 @@ class AgentRepository:
         except Exception as e:
             raise Exception(f"Failed to get agent: {str(e)}")
 
-    def list_agents(self, limit: int = 10, offset: int = 0) -> AgentListResponse:
+    def list_agents(self, limit: int = 10) -> AgentListResponse:
         """List agents."""
         try:
-            agents_response = self.client.agents.list_agents()
+            agents_response = self.client.agents.list_agents(
+                limit=limit,
+            )
 
             now = datetime.now().isoformat()
 
             agents = []
-            for agent in agents_response.data:
+            for agent in agents_response:
                 agents.append(
                     AgentResponse(
                         id=agent.id,
@@ -96,7 +104,7 @@ class AgentRepository:
                 )
 
             return AgentListResponse(
-                agents=agents[offset : offset + limit],
+                agents=agents,
                 total=len(agents),
             )
         except Exception as e:
@@ -113,46 +121,82 @@ class AgentRepository:
     def chat_with_agent(self, agent_id: str, request: ChatRequest) -> ChatResponse:
         """Chat with an agent."""
         try:
-            # Create a thread if not provided
-            if request.thread_id:
-                thread_id = request.thread_id
-            else:
-                thread_response = self.client.agents.create_thread()
-                thread_id = thread_response.id
-
-            # Create a message
-            message_response = self.client.agents.create_message(
-                thread_id=thread_id,
+            _ = self.client.agents.messages.create(
+                thread_id=request.thread_id,
                 role="user",
                 content=request.message,
             )
 
-            # Create a run
-            run_response = self.client.agents.create_run(
-                thread_id=thread_id,
-                assistant_id=agent_id,
+            run = self.client.agents.runs.create_and_process(
+                agent_id=agent_id,
+                thread_id=request.thread_id,
             )
 
-            # Poll for completion
-            while run_response.status in ["queued", "in_progress"]:
-                run_response = self.client.agents.get_run(
-                    thread_id=thread_id,
-                    run_id=run_response.id,
+            print(f"Run ID: {run.id}m status: {run.last_error}")
+
+            messages = self.client.agents.messages.list(
+                thread_id=request.thread_id,
+            )
+
+            # FIXME: Iterable object の最初のメッセージを取得
+            for message in messages:
+                return ChatResponse(
+                    id=run.id,
+                    agent_id=agent_id,
+                    thread_id=request.thread_id,
+                    message=request.message,
+                    response=message.content.__str__() if messages else "",
+                    created_at=message.created_at.isoformat() if messages else "",
                 )
 
-            # Get the response
-            messages = self.client.agents.list_messages(thread_id=thread_id)
-            response_message = messages.data[0].content[0].text.value
-
-            now = datetime.now().isoformat()
-
-            return ChatResponse(
-                id=message_response.id,
-                agent_id=agent_id,
-                thread_id=thread_id,
-                message=request.message,
-                response=response_message,
-                created_at=now,
-            )
         except Exception as e:
             raise Exception(f"Failed to chat with agent: {str(e)}")
+
+    def create_thread(self, request: ThreadRequest) -> ThreadResponse:
+        """Create a new thread for chatting with an agent."""
+        try:
+            thread_response = self.client.agents.threads.create(**request.model_dump())
+            return ThreadResponse(
+                id=thread_response.id,
+                created_at=thread_response.created_at.isoformat(),
+            )
+        except Exception as e:
+            raise Exception(f"Failed to create thread: {str(e)}")
+
+    def get_thread(self, thread_id: str) -> ThreadResponse:
+        """Get a specific thread by ID."""
+        try:
+            thread_response = self.client.agents.threads.get(thread_id=thread_id)
+            return ThreadResponse(
+                id=thread_response.id,
+                created_at=thread_response.created_at.isoformat(),
+            )
+        except Exception as e:
+            raise Exception(f"Failed to get thread: {str(e)}")
+
+    def delete_thread(self, thread_id: str) -> bool:
+        """Delete a specific thread by ID."""
+        try:
+            self.client.agents.threads.delete(thread_id=thread_id)
+            return True
+        except Exception as e:
+            raise Exception(f"Failed to delete thread: {str(e)}")
+
+    def list_threads(self, limit: int) -> ThreadListResponse:
+        """List threads for a specific agent."""
+        try:
+            threads_response = self.client.agents.threads.list(limit=limit)
+            threads = []
+            for thread in threads_response:
+                threads.append(
+                    ThreadResponse(
+                        id=thread.id,
+                        created_at=thread.created_at.isoformat(),
+                    )
+                )
+            return ThreadListResponse(
+                threads=threads,
+                total=len(threads),
+            )
+        except Exception as e:
+            raise Exception(f"Failed to list threads: {str(e)}")

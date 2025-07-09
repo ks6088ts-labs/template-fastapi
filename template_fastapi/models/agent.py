@@ -15,11 +15,10 @@ class AgentStatus(str, Enum):
 class AgentRequest(BaseModel):
     """Request model for creating an agent"""
 
-    name: str
-    description: str | None = None
-    instructions: str | None = None
+    name: str = "Default Agent"
+    description: str | None = "Hello Agent"
+    instructions: str | None = "You are a helpful assistant."
     model: str = "gpt-4o"
-    tools: list[dict[str, Any]] | None = None
 
 
 class AgentResponse(BaseModel):
@@ -34,6 +33,19 @@ class AgentResponse(BaseModel):
     status: AgentStatus
     created_at: str
     updated_at: str
+
+
+class ThreadRequest(BaseModel):
+    """Request model for creating a chat thread"""
+
+    pass
+
+
+class ThreadResponse(BaseModel):
+    """Response model for chat thread"""
+
+    id: str
+    created_at: str
 
 
 class ChatRequest(BaseModel):
@@ -58,4 +70,11 @@ class AgentListResponse(BaseModel):
     """Response model for listing agents"""
 
     agents: list[AgentResponse]
+    total: int
+
+
+class ThreadListResponse(BaseModel):
+    """Response model for listing threads"""
+
+    threads: list[ThreadResponse]
     total: int

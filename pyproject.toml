@@ -71,3 +71,4 @@ possibly-unbound-attribute = "ignore" # Ignore possibly unbound attributes in cl
 unknown-argument = "ignore" # Ignore unknown arguments in function calls
 invalid-assignment = "ignore" # Ignore invalid assignments
 invalid-argument-type = "ignore" # Ignore invalid argument types
+invalid-return-type = "ignore" # Ignore invalid return types

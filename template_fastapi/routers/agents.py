@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, HTTPException, Query
 
 from template_fastapi.models.agent import (
@@ -7,6 +6,9 @@ from template_fastapi.models.agent import (
     AgentResponse,
     ChatRequest,
     ChatResponse,
+    ThreadListResponse,
+    ThreadRequest,
+    ThreadResponse,
 )
 from template_fastapi.repositories.agents import AgentRepository
 
@@ -54,13 +56,12 @@ async def get_agent(agent_id: str) -> AgentResponse:
 )
 async def list_agents(
     limit: int = Query(default=10, ge=1, le=100, description="取得する件数"),
-    offset: int = Query(default=0, ge=0, description="オフセット"),
 ) -> AgentListResponse:
     """
     エージェントの一覧を取得する
     """
     try:
-        return agent_repo.list_agents(limit=limit, offset=offset)
+        return agent_repo.list_agents(limit=limit)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"エージェント一覧の取得に失敗しました: {str(e)}")
 
@@ -98,3 +99,72 @@ async def chat_with_agent(agent_id: str, request: ChatRequest) -> ChatResponse:
         return agent_repo.chat_with_agent(agent_id, request)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"エージェントとのチャットに失敗しました: {str(e)}")
+
+
+@router.post(
+    "/agents/threads/",
+    response_model=ThreadResponse,
+    tags=["agents"],
+    operation_id="create_thread",
+)
+async def create_thread(request: ThreadRequest) -> ThreadResponse:
+    """
+    新しいスレッドを作成する
+    """
+    try:
+        return agent_repo.create_thread(request)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"スレッドの作成に失敗しました: {str(e)}")
+
+
+@router.get(
+    "/agents/threads/{thread_id}",
+    response_model=ThreadResponse,
+    tags=["agents"],
+    operation_id="get_thread",
+)
+async def get_thread(thread_id: str) -> ThreadResponse:
+    """
+    スレッドの情報を取得する
+    """
+    try:
+        return agent_repo.get_thread(thread_id)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"スレッドが見つかりません: {str(e)}")
+
+
+@router.delete(
+    "/agents/threads/{thread_id}",
+    tags=["agents"],
+    operation_id="delete_thread",
+)
+async def delete_thread(thread_id: str) -> dict:
+    """
+    スレッドを削除する
+    """
+    try:
+        success = agent_repo.delete_thread(thread_id)
+        if success:
+            return {"message": "スレッドが正常に削除されました"}
+        else:
+            raise HTTPException(status_code=500, detail="スレッドの削除に失敗しました")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"スレッドの削除に失敗しました: {str(e)}")
+
+
+@router.get(
+    "/agents/threads/",
+    response_model=ThreadListResponse,
+    tags=["agents"],
+    operation_id="list_threads",
+)
+async def list_threads(
+    limit: int = Query(default=10, ge=1, le=100, description="取得する件数"),
+) -> ThreadListResponse:
+    """
+    エージェントのスレッド一覧を取得する
+    """
+    try:
+        return agent_repo.list_threads(limit=limit)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"スレッド一覧の取得に失敗しました: {str(e)}")

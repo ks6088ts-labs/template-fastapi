@@ -83,15 +83,13 @@ def get_agent(
 @app.command()
 def list_agents(
     limit: int = typer.Option(10, "--limit", "-l", help="取得する件数"),
-    offset: int = typer.Option(0, "--offset", "-o", help="オフセット"),
 ):
     """エージェントの一覧を取得する"""
     console.print("[bold green]エージェント一覧を取得します[/bold green]")
     console.print(f"取得件数: {limit}")
-    console.print(f"オフセット: {offset}")
 
     try:
-        agents_response = agent_repo.list_agents(limit=limit, offset=offset)
+        agents_response = agent_repo.list_agents(limit=limit)
 
         if not agents_response.agents:
             console.print("[yellow]エージェントが見つかりません[/yellow]")
