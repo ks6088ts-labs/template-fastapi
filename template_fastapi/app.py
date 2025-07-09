@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.trace import Span
 
-from template_fastapi.routers import chats, demos, files, foodies, games, items, msgraphs_sites, speeches
+from template_fastapi.routers import chats, demos, files, foodies, games, items, msgraphs, speeches
 
 app = FastAPI()
 
@@ -42,5 +42,5 @@ app.include_router(games.router)
 app.include_router(foodies.router)
 app.include_router(files.router)
 app.include_router(speeches.router)
-app.include_router(msgraphs_sites.router)
+app.include_router(msgraphs.router, prefix="/msgraphs")
 app.include_router(chats.router)

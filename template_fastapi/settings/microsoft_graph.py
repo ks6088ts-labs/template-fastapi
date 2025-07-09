@@ -7,7 +7,6 @@ class Settings(BaseSettings):
     microsoft_graph_tenant_id: str = "<YOUR_TENANT_ID>"
     microsoft_graph_client_id: str = "<YOUR_CLIENT_ID>"
     microsoft_graph_client_secret: str = "<YOUR_CLIENT_SECRET>"
-    microsoft_graph_site_id: str = "<YOUR_SITE_ID>"
 
     model_config = SettingsConfigDict(
         env_file=".env",

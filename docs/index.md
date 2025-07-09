@@ -176,65 +176,59 @@ Microsoft Graph Sites サービスは、SharePoint Online のファイルを操�
 
 ```shell
 # Help
-uv run python scripts/msgraphs_sites.py --help
+uv run python scripts/msgraphs/sites.py --help
 
-# List files in SharePoint site
-uv run python scripts/msgraphs_sites.py list-files
+# List files in SharePoint site (site_id is required)
+uv run python scripts/msgraphs/sites.py list-files <SITE_ID>
 
 # List files in specific folder
-uv run python scripts/msgraphs_sites.py list-files --folder "Documents"
+uv run python scripts/msgraphs/sites.py list-files <SITE_ID> --folder "Documents"
 
 # List files in JSON format
-uv run python scripts/msgraphs_sites.py list-files --format json
+uv run python scripts/msgraphs/sites.py list-files <SITE_ID> --format json
 
 # Upload a single file
-uv run python scripts/msgraphs_sites.py upload-file "local_file.txt"
+uv run python scripts/msgraphs/sites.py upload-file <SITE_ID> "local_file.txt"
 
 # Upload file to specific folder
-uv run python scripts/msgraphs_sites.py upload-file "local_file.txt" --folder "Documents"
-
-# Upload file with custom name
-uv run python scripts/msgraphs_sites.py upload-file "local_file.txt" --name "renamed_file.txt"
+uv run python scripts/msgraphs/sites.py upload-file <SITE_ID> "local_file.txt" --folder "Documents"
 
 # Upload multiple files
-uv run python scripts/msgraphs_sites.py upload-files "file1.txt" "file2.txt" "file3.txt"
+uv run python scripts/msgraphs/sites.py upload-files <SITE_ID> "file1.txt" "file2.txt" "file3.txt"
 
 # Upload multiple files to specific folder
-uv run python scripts/msgraphs_sites.py upload-files "file1.txt" "file2.txt" --folder "Documents"
+uv run python scripts/msgraphs/sites.py upload-files <SITE_ID> "file1.txt" "file2.txt" --folder "Documents"
 
 # Download a file
-uv run python scripts/msgraphs_sites.py download-file "remote_file.txt"
+uv run python scripts/msgraphs/sites.py download-file <SITE_ID> "remote_file.txt"
 
 # Download file from specific folder
-uv run python scripts/msgraphs_sites.py download-file "remote_file.txt" --folder "Documents"
+uv run python scripts/msgraphs/sites.py download-file <SITE_ID> "remote_file.txt" --folder "Documents"
 
 # Download file with custom output path
-uv run python scripts/msgraphs_sites.py download-file "remote_file.txt" --output "downloaded_file.txt"
+uv run python scripts/msgraphs/sites.py download-file <SITE_ID> "remote_file.txt" --output "downloaded_file.txt"
 
 # Get file information
-uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt"
+uv run python scripts/msgraphs/sites.py get-file-info <SITE_ID> "remote_file.txt"
 
 # Get file information from specific folder
-uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt" --folder "Documents"
-
-# Get file information in JSON format
-uv run python scripts/msgraphs_sites.py get-file-info "remote_file.txt" --format json
+uv run python scripts/msgraphs/sites.py get-file-info <SITE_ID> "remote_file.txt" --folder "Documents"
 
 # Delete a file
-uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt"
+uv run python scripts/msgraphs/sites.py delete-file <SITE_ID> "remote_file.txt"
 
 # Delete file from specific folder
-uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt" --folder "Documents"
+uv run python scripts/msgraphs/sites.py delete-file <SITE_ID> "remote_file.txt" --folder "Documents"
 
 # Delete file without confirmation
-uv run python scripts/msgraphs_sites.py delete-file "remote_file.txt" --force
+uv run python scripts/msgraphs/sites.py delete-file <SITE_ID> "remote_file.txt" --force
 
 # Delete multiple files
-uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" "file3.txt"
+uv run python scripts/msgraphs/sites.py delete-files <SITE_ID> "file1.txt" "file2.txt" "file3.txt"
 
 # Delete multiple files from specific folder
-uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" --folder "Documents"
+uv run python scripts/msgraphs/sites.py delete-files <SITE_ID> "file1.txt" "file2.txt" --folder "Documents"
 
 # Delete multiple files without confirmation
-uv run python scripts/msgraphs_sites.py delete-files "file1.txt" "file2.txt" --force
+uv run python scripts/msgraphs/sites.py delete-files <SITE_ID> "file1.txt" "file2.txt" --force
 ```
