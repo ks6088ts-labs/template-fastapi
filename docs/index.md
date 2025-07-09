@@ -125,7 +125,9 @@ uv run python scripts/microsoft_graphs.py --help
 uv run python scripts/microsoft_graphs.py get-access-token
 
 # Get my profile
-uv run python scripts/microsoft_graphs.py get-my-profile
+uv run python scripts/microsoft_graphs.py get-my-profile \
+  --access-token $ACCESS_TOKEN \
+  --expires-on $EXPIRES_ON
 ```
 
 ## MCP
