@@ -111,6 +111,10 @@ uv run python scripts/speeches.py delete-transcription "$JOB_ID"
 uv run python scripts/speeches.py delete-transcription "$JOB_ID" --force
 ```
 
+## Microsoft Graph API
+
+- [Build Python apps with Microsoft Graph](https://learn.microsoft.com/en-us/graph/tutorials/python?tabs=aad)
+
 ## MCP
 
 - [FastAPI-MCP](https://github.com/tadata-org/fastapi_mcp)
