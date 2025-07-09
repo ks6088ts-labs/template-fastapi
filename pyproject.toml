@@ -5,6 +5,7 @@ description = "A GitHub template repository for Python"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "azure-ai-projects>=1.0.0b12",
     "azure-cosmos>=4.9.0",
     "azure-functions>=1.23.0",
     "azure-identity>=1.23.0",
@@ -70,3 +71,4 @@ possibly-unbound-attribute = "ignore" # Ignore possibly unbound attributes in cl
 unknown-argument = "ignore" # Ignore unknown arguments in function calls
 invalid-assignment = "ignore" # Ignore invalid assignments
 invalid-argument-type = "ignore" # Ignore invalid argument types
+invalid-return-type = "ignore" # Ignore invalid return types
