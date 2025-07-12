@@ -1,0 +1,245 @@
+# External API Specification
+
+## Overview
+
+The template-fastapi application provides a comprehensive REST API built with FastAPI, integrating multiple Azure cloud services to deliver enterprise-grade functionality for content management, AI-powered conversations, and data processing.
+
+## API Services
+
+### 1. Items Management API
+
+**Base Path**: `/items/`
+
+**Purpose**: Core CRUD operations for item management with Azure CosmosDB backend.
+
+**Endpoints**:
+- `GET /items/` - List all items with pagination
+- `GET /items/{item_id}` - Retrieve specific item
+- `POST /items/` - Create new item
+- `PUT /items/{item_id}` - Update existing item
+- `DELETE /items/{item_id}` - Delete item
+- `GET /items/search/?q={query}` - Search items by text
+
+**Data Model**:
+```json
+{
+  "id": "string",
+  "name": "string", 
+  "description": "string",
+  "price": 0.0,
+  "tax": 0.0
+}
+```
+
+### 2. File Management API
+
+**Base Path**: `/files/`
+
+**Purpose**: File upload, storage, and retrieval using Azure Blob Storage.
+
+**Endpoints**:
+- `GET /files/` - List files with optional prefix filter
+- `POST /files/upload` - Upload single file
+- `POST /files/upload-multiple` - Upload multiple files
+- `GET /files/{filename}` - Download file
+- `GET /files/{filename}/info` - Get file metadata
+- `DELETE /files/{filename}` - Delete single file
+- `DELETE /files/` - Delete multiple files (request body)
+
+**Features**:
+- Automatic content type detection
+- File metadata tracking
+- Bulk operations support
+
+### 3. Restaurant Discovery API
+
+**Base Path**: `/foodies/restaurants/`
+
+**Purpose**: Restaurant management with geospatial search capabilities.
+
+**Endpoints**:
+- `GET /restaurants/` - List restaurants with pagination
+- `GET /restaurants/{id}` - Get restaurant details
+- `POST /restaurants/` - Create new restaurant
+- `PUT /restaurants/{id}` - Update restaurant
+- `DELETE /restaurants/{id}` - Delete restaurant
+- `GET /restaurants/search/?query={text}` - Vector-based text search
+- `GET /restaurants/near/?latitude={lat}&longitude={lng}` - Geospatial proximity search
+
+**Search Features**:
+- Text-based vector search using embeddings
+- Location-based proximity search with configurable radius
+- Pagination support for all list operations
+
+### 4. Speech Transcription API
+
+**Base Path**: `/speeches/transcriptions/`
+
+**Purpose**: Batch audio transcription using Azure AI Speech Services.
+
+**Endpoints**:
+- `GET /transcriptions/` - List all transcription jobs
+- `POST /transcriptions/` - Create transcription job
+- `GET /transcriptions/{job_id}` - Get job status
+- `GET /transcriptions/{job_id}/files` - List result files
+- `GET /transcriptions/{job_id}/result?file_url={url}` - Get transcription result
+- `DELETE /transcriptions/{job_id}` - Delete job
+
+**Workflow**:
+1. Submit audio URLs for batch processing
+2. Monitor job status (Created → Running → Succeeded/Failed)
+3. Retrieve transcription results when complete
+
+### 5. Agent-Based Conversation API
+
+#### LangGraph Agents
+**Base Path**: `/agents/langgraph/`
+
+**Purpose**: AI agents with custom tools for mathematical calculations, web search, and time queries.
+
+**Endpoints**:
+- `GET /tools` - List available agent tools
+
+**Available Tools**:
+- Calculator: Mathematical expression evaluation
+- Current Time: Timezone-aware time queries
+- Search: Web search capabilities
+
+#### Azure AI Foundry Agents
+**Base Path**: `/agents/azure-ai-foundry/`
+
+**Purpose**: Thread-based conversational AI using Azure AI Foundry platform.
+
+**Agent Management**:
+- `GET /` - List agents
+- `POST /` - Create agent
+- `GET /{agent_id}` - Get agent details
+- `DELETE /{agent_id}` - Delete agent
+- `POST /{agent_id}/chat` - Chat with agent
+
+**Thread Management**:
+- `GET /threads/` - List conversation threads
+- `POST /threads/` - Create new thread
+- `GET /threads/{thread_id}` - Get thread details
+- `DELETE /threads/{thread_id}` - Delete thread
+
+### 6. Real-time Chat Interface
+
+**Base Path**: `/chats/`
+
+**Purpose**: WebSocket-based real-time chat with HTML interface.
+
+**Endpoints**:
+- `GET /` - Chat interface (HTML page)
+- `WebSocket /ws/{client_id}` - Real-time messaging
+
+**Features**:
+- Real-time bidirectional communication
+- Multi-client support
+- Agent integration capabilities
+
+### 7. Demo & Testing API
+
+**Base Path**: `/demos/`
+
+**Purpose**: Demonstration endpoints for testing and monitoring.
+
+**Endpoints**:
+- `GET /roll_dice` - Random dice roll (1-6)
+- `GET /flaky/{failure_rate}` - Configurable failure simulation (0-100%)
+- `GET /flaky/exception` - Guaranteed exception endpoint
+- `GET /heavy_sync/{sleep_ms}` - Simulated heavy processing
+
+## Azure Cloud Services Integration
+
+### Azure CosmosDB
+- **Purpose**: Primary database for items and restaurant data
+- **Features**: Global distribution, automatic scaling, vector search support
+- **Configuration**: Connection string in `AZURE_COSMOSDB_CONNECTION_STRING`
+
+### Azure Blob Storage
+- **Purpose**: File storage and management
+- **Features**: Hierarchical namespace, metadata support, CDN integration
+- **Configuration**: Connection string in `AZURE_BLOB_STORAGE_CONNECTION_STRING`
+
+### Azure OpenAI Service
+- **Purpose**: LLM capabilities for agents and embeddings
+- **Models**: GPT-4o for chat, text-embedding-3-small for search
+- **Configuration**: Endpoint and API key in environment variables
+
+### Azure AI Speech
+- **Purpose**: Batch audio transcription
+- **Features**: Multi-language support, custom vocabulary, speaker diarization
+- **Configuration**: API key and endpoint in environment variables
+
+### Azure AI Foundry
+- **Purpose**: Enterprise AI agent platform
+- **Features**: Thread-based conversations, tool integration, model selection
+- **Configuration**: Project endpoint and API key
+
+### Azure Application Insights
+- **Purpose**: Application monitoring and telemetry
+- **Features**: Request tracing, performance monitoring, custom metrics
+- **Configuration**: Connection string enables automatic instrumentation
+
+## Authentication & Security
+
+### Current Implementation
+- No authentication required (template/development setup)
+- Internal service-to-service authentication via API keys
+- Azure services authenticate via connection strings
+
+### Production Recommendations
+- Implement OAuth 2.0 / JWT authentication
+- Use Azure Active Directory integration
+- Enable API rate limiting
+- Configure CORS policies
+- Use Azure Key Vault for secrets management
+
+## Error Handling
+
+### Standard HTTP Status Codes
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request (validation errors)
+- `404` - Not Found
+- `422` - Unprocessable Entity (Pydantic validation)
+- `500` - Internal Server Error
+
+### Error Response Format
+```json
+{
+  "detail": "Error description in Japanese/English",
+  "type": "error_type",
+  "loc": ["field", "path"] // For validation errors
+}
+```
+
+## Monitoring & Observability
+
+### Structured Logging
+- Configurable log levels via `LOG_LEVEL` environment variable
+- JSON-structured logs for production deployment
+- Request/response logging with correlation IDs
+
+### Metrics & Tracing
+- OpenTelemetry integration with Azure Application Insights
+- Custom metrics for business operations
+- Distributed tracing across service boundaries
+
+### Health Checks
+- Built-in FastAPI health monitoring
+- Azure service dependency health checks
+- Container readiness and liveness probes
+
+## API Versioning & Compatibility
+
+### Current Version
+- API Version: 1.0
+- No explicit versioning in URLs (future consideration)
+- Backward compatibility maintained for minor updates
+
+### Future Considerations
+- URL-based versioning (`/v1/`, `/v2/`)
+- Header-based versioning
+- Feature flags for gradual rollouts
