@@ -10,8 +10,7 @@ chat_repository = ChatRepository()
 
 
 @router.get(
-    "/chats/",
-    tags=["chats"],
+    "/",
 )
 async def get(request: Request):
     """Get the chat page with configurable WebSocket URL."""

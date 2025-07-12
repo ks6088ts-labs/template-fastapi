@@ -11,9 +11,8 @@ file_repo = FileRepository()
 
 
 @router.get(
-    "/files/",
+    "/",
     response_model=list[FileModel],
-    tags=["files"],
     operation_id="list_files",
 )
 async def list_files(prefix: str | None = None) -> list[FileModel]:
@@ -27,9 +26,8 @@ async def list_files(prefix: str | None = None) -> list[FileModel]:
 
 
 @router.post(
-    "/files/upload",
+    "/upload",
     response_model=FileModel,
-    tags=["files"],
     operation_id="upload_file",
 )
 async def upload_file(file: UploadFile = File(...)) -> FileModel:
@@ -44,9 +42,8 @@ async def upload_file(file: UploadFile = File(...)) -> FileModel:
 
 
 @router.post(
-    "/files/upload-multiple",
+    "/upload-multiple",
     response_model=list[FileModel],
-    tags=["files"],
     operation_id="upload_multiple_files",
 )
 async def upload_multiple_files(files: list[UploadFile] = File(...)) -> list[FileModel]:
@@ -65,8 +62,7 @@ async def upload_multiple_files(files: list[UploadFile] = File(...)) -> list[Fil
 
 
 @router.get(
-    "/files/{file_name}",
-    tags=["files"],
+    "/{file_name}",
     operation_id="download_file",
 )
 async def download_file(file_name: str):
@@ -89,9 +85,8 @@ async def download_file(file_name: str):
 
 
 @router.get(
-    "/files/{file_name}/info",
+    "/{file_name}/info",
     response_model=FileModel,
-    tags=["files"],
     operation_id="get_file_info",
 )
 async def get_file_info(file_name: str) -> FileModel:
@@ -107,8 +102,7 @@ async def get_file_info(file_name: str) -> FileModel:
 
 
 @router.delete(
-    "/files/{file_name}",
-    tags=["files"],
+    "/{file_name}",
     operation_id="delete_file",
 )
 async def delete_file(file_name: str) -> dict:
@@ -125,8 +119,7 @@ async def delete_file(file_name: str) -> dict:
 
 
 @router.delete(
-    "/files/",
-    tags=["files"],
+    "/",
     operation_id="delete_multiple_files",
 )
 async def delete_multiple_files(file_names: list[str]) -> dict:

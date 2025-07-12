@@ -68,7 +68,7 @@ async def delete_item(item_id: int):
     return {"message": "Item deleted successfully"}
 
 
-@router.get("/search/", response_model=list[Item], tags=["search"], operation_id="search_items")
+@router.get("/search/", response_model=list[Item], operation_id="search_items")
 async def search_items(
     q: str | None = Query(None, description="Search query string"),
     min_price: float | None = Query(None, description="Minimum price"),

@@ -17,9 +17,8 @@ agent_repo = AgentRepository()
 
 
 @router.post(
-    "/agents/",
+    "/",
     response_model=AgentResponse,
-    tags=["agents"],
     operation_id="create_agent",
 )
 async def create_agent(request: AgentRequest) -> AgentResponse:
@@ -33,9 +32,8 @@ async def create_agent(request: AgentRequest) -> AgentResponse:
 
 
 @router.get(
-    "/agents/{agent_id}",
+    "/{agent_id}",
     response_model=AgentResponse,
-    tags=["agents"],
     operation_id="get_agent",
 )
 async def get_agent(agent_id: str) -> AgentResponse:
@@ -49,9 +47,8 @@ async def get_agent(agent_id: str) -> AgentResponse:
 
 
 @router.get(
-    "/agents/",
+    "/",
     response_model=AgentListResponse,
-    tags=["agents"],
     operation_id="list_agents",
 )
 async def list_agents(
@@ -67,8 +64,7 @@ async def list_agents(
 
 
 @router.delete(
-    "/agents/{agent_id}",
-    tags=["agents"],
+    "/{agent_id}",
     operation_id="delete_agent",
 )
 async def delete_agent(agent_id: str) -> dict:
@@ -86,9 +82,8 @@ async def delete_agent(agent_id: str) -> dict:
 
 
 @router.post(
-    "/agents/{agent_id}/chat",
+    "/{agent_id}/chat",
     response_model=ChatResponse,
-    tags=["agents"],
     operation_id="chat_with_agent",
 )
 async def chat_with_agent(agent_id: str, request: ChatRequest) -> ChatResponse:
@@ -102,9 +97,8 @@ async def chat_with_agent(agent_id: str, request: ChatRequest) -> ChatResponse:
 
 
 @router.post(
-    "/agents/threads/",
+    "/threads/",
     response_model=ThreadResponse,
-    tags=["agents"],
     operation_id="create_thread",
 )
 async def create_thread(request: ThreadRequest) -> ThreadResponse:
@@ -118,9 +112,8 @@ async def create_thread(request: ThreadRequest) -> ThreadResponse:
 
 
 @router.get(
-    "/agents/threads/{thread_id}",
+    "/threads/{thread_id}",
     response_model=ThreadResponse,
-    tags=["agents"],
     operation_id="get_thread",
 )
 async def get_thread(thread_id: str) -> ThreadResponse:
@@ -134,8 +127,7 @@ async def get_thread(thread_id: str) -> ThreadResponse:
 
 
 @router.delete(
-    "/agents/threads/{thread_id}",
-    tags=["agents"],
+    "/threads/{thread_id}",
     operation_id="delete_thread",
 )
 async def delete_thread(thread_id: str) -> dict:
@@ -153,9 +145,8 @@ async def delete_thread(thread_id: str) -> dict:
 
 
 @router.get(
-    "/agents/threads/",
+    "/threads/",
     response_model=ThreadListResponse,
-    tags=["agents"],
     operation_id="list_threads",
 )
 async def list_threads(
