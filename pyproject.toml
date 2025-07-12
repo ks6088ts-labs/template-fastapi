@@ -52,7 +52,7 @@ select = ["E", "F", "I", "UP"]
 ignore = ["D203"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --cov"
+addopts = "-ra"
 testpaths = ["tests"]
 pythonpath = ['.']
 log_cli = true
