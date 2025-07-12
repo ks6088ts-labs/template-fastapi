@@ -78,3 +78,20 @@ class ThreadListResponse(BaseModel):
 
     threads: list[ThreadResponse]
     total: int
+
+
+class LangGraphChatRequest(BaseModel):
+    """Request model for LangGraph chat"""
+
+    message: str
+    thread_id: str | None = None
+
+
+class LangGraphChatResponse(BaseModel):
+    """Response model for LangGraph chat"""
+
+    message: str
+    response: str
+    thread_id: str
+    tools_used: list[str] | None = None
+    created_at: str

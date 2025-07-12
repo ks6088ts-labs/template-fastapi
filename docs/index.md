@@ -218,3 +218,55 @@ python scripts/agents.py chat <agent_id> "機械学習の最新トレンドに�
 # エージェントを削除
 python scripts/agents.py delete-agent <agent_id>
 ```
+
+### LangGraph Agent
+
+LangGraphベースのエージェントAPIを使用した対話型AIアシスタント。ツール呼び出し機能を持つシンプルなエージェントワークフローを実装しています。
+
+#### CLI 実行例
+
+```bash
+# ヘルプ
+python scripts/langgraph_agent.py --help
+
+# エージェントとチャット
+python scripts/langgraph_agent.py chat "こんにちは！今何時ですか？"
+
+# スレッドIDを指定してチャット（会話の継続）
+python scripts/langgraph_agent.py chat "前回の続きを教えてください" --thread-id "12345-67890-abcdef"
+
+# 詳細情報付きでチャット
+python scripts/langgraph_agent.py chat "2 + 2 × 3 を計算してください" --verbose
+
+# 対話モード
+python scripts/langgraph_agent.py interactive
+
+# 利用可能なツール一覧
+python scripts/langgraph_agent.py tools
+
+# デモモード（サンプル質問のテスト）
+python scripts/langgraph_agent.py demo
+```
+
+#### API エンドポイント
+
+```bash
+# FastAPIサーバーを起動
+make dev
+
+# LangGraphエージェントとチャット
+curl -X POST "http://localhost:8000/agents/langgraph/chat" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "こんにちは！"}'
+
+# ストリーミングチャット
+curl -X POST "http://localhost:8000/agents/langgraph/chat/stream" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "長い回答をお願いします"}'
+
+# 利用可能なツール一覧
+curl -X GET "http://localhost:8000/agents/langgraph/tools"
+
+# ヘルスチェック
+curl -X GET "http://localhost:8000/agents/langgraph/health"
+```
