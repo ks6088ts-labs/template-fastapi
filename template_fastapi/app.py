@@ -12,12 +12,20 @@ from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.trace import Span
 
 from template_fastapi.routers import agents, chats, demos, files, foodies, items, speeches
+from template_fastapi.settings.logging import configure_logging, get_logger
+
+# Configure logging first
+configure_logging()
+logger = get_logger(__name__)
 
 app = FastAPI()
+
+logger.info("Starting FastAPI application")
 
 # If APPLICATIONINSIGHTS_CONNECTION_STRING exists, configure Azure Monitor
 AZURE_CONNECTION_STRING = getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")
 if AZURE_CONNECTION_STRING:
+    logger.info("Configuring Azure Monitor telemetry")
 
     def server_request_hook(span: Span, scope: dict):
         if span and span.is_recording():
@@ -26,7 +34,7 @@ if AZURE_CONNECTION_STRING:
                 user_id = uuid.uuid4().hex  # Replace with actual user ID retrieval logic
                 span.set_attribute("enduser.id", user_id)
             except KeyError:
-                pass
+                logger.warning("Failed to set user ID attribute in telemetry")
 
     configure_azure_monitor(
         connection_string=AZURE_CONNECTION_STRING,
@@ -34,6 +42,8 @@ if AZURE_CONNECTION_STRING:
         server_request_hook=server_request_hook,
     )
     FastAPIInstrumentor.instrument_app(app)
+else:
+    logger.info("Azure Monitor telemetry not configured (APPLICATIONINSIGHTS_CONNECTION_STRING not set)")
 
 # Include routers
 # Routers configuration list
@@ -77,6 +87,7 @@ routersConfig = [
 
 # Include routers using a loop
 for routerConfig in routersConfig:
+    logger.info(f"Including router: {routerConfig['prefix']} with tags: {routerConfig['tags']}")
     app.include_router(
         router=routerConfig["router"],
         prefix=routerConfig["prefix"],
@@ -87,3 +98,5 @@ for routerConfig in routersConfig:
             },
         },
     )
+
+logger.info("FastAPI application configured successfully")
