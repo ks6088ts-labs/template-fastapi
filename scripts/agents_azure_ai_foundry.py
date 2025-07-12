@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# filepath: /home/runner/work/template-fastapi/template-fastapi/scripts/agents.py
-
 import json
 
 import typer

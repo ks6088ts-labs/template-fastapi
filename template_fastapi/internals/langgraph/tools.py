@@ -1,7 +1,6 @@
 """Tools for LangGraph agent."""
 
 import time
-from typing import Any
 
 from langchain_core.tools import BaseTool
 from pydantic import BaseModel, Field
@@ -9,16 +8,19 @@ from pydantic import BaseModel, Field
 
 class CurrentTimeInput(BaseModel):
     """Input for current time tool."""
+
     timezone: str = Field(default="UTC", description="Timezone to get time for")
 
 
 class CalculatorInput(BaseModel):
     """Input for calculator tool."""
+
     expression: str = Field(description="Mathematical expression to evaluate")
 
 
 class SearchInput(BaseModel):
     """Input for search tool."""
+
     query: str = Field(description="Search query")
 
 
@@ -71,7 +73,7 @@ class MockSearchTool(BaseTool):
 
     def _run(self, query: str) -> str:
         """Mock search function."""
-        return f"Mock search results for '{query}': This is a demonstration search tool. In a real implementation, this would connect to a search API."
+        return f"Mock search results for '{query}': This is a demonstration search tool. In a real implementation, this would connect to a search API."  # noqa: E501
 
 
 def get_tools() -> list[BaseTool]:

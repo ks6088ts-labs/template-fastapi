@@ -204,48 +204,48 @@ az resource update \
 
 ```bash
 # エージェントを作成
-python scripts/agents.py create-agent "研究アシスタント" --description "研究をサポートするAIアシスタント" --instructions "あなたは研究者をサポートするAIアシスタントです。質問に対して詳細で正確な回答を提供してください。"
+uv run python scripts/agents_azure_ai_foundry.py create-agent "研究アシスタント" --description "研究をサポートするAIアシスタント" --instructions "あなたは研究者をサポートするAIアシスタントです。質問に対して詳細で正確な回答を提供してください。"
 
 # エージェント一覧を取得
-python scripts/agents.py list-agents
+uv run python scripts/agents_azure_ai_foundry.py list-agents
 
 # エージェントの詳細を取得
-python scripts/agents.py get-agent <agent_id>
+uv run python scripts/agents_azure_ai_foundry.py get-agent <agent_id>
 
 # エージェントとチャット
-python scripts/agents.py chat <agent_id> "機械学習の最新トレンドについて教えてください"
+uv run python scripts/agents_azure_ai_foundry.py chat <agent_id> "機械学習の最新トレンドについて教えてください"
 
 # エージェントを削除
-python scripts/agents.py delete-agent <agent_id>
+uv run python scripts/agents_azure_ai_foundry.py delete-agent <agent_id>
 ```
 
 ### LangGraph Agent
 
-LangGraphベースのエージェントAPIを使用した対話型AIアシスタント。ツール呼び出し機能を持つシンプルなエージェントワークフローを実装しています。
+LangGraph ベースのエージェント API を使用した対話型 AI アシスタント。ツール呼び出し機能を持つシンプルなエージェントワークフローを実装しています。
 
 #### CLI 実行例
 
 ```bash
 # ヘルプ
-python scripts/langgraph_agent.py --help
+uv run python scripts/agents_langgraph.py --help
 
 # エージェントとチャット
-python scripts/langgraph_agent.py chat "こんにちは！今何時ですか？"
+uv run python scripts/agents_langgraph.py chat "こんにちは！今何時ですか？"
 
 # スレッドIDを指定してチャット（会話の継続）
-python scripts/langgraph_agent.py chat "前回の続きを教えてください" --thread-id "12345-67890-abcdef"
+uv run python scripts/agents_langgraph.py chat "前回の続きを教えてください" --thread-id "12345-67890-abcdef"
 
 # 詳細情報付きでチャット
-python scripts/langgraph_agent.py chat "2 + 2 × 3 を計算してください" --verbose
+uv run python scripts/agents_langgraph.py chat "2 + 2 × 3 を計算してください" --verbose
 
 # 対話モード
-python scripts/langgraph_agent.py interactive
+uv run python scripts/agents_langgraph.py interactive
 
 # 利用可能なツール一覧
-python scripts/langgraph_agent.py tools
+uv run python scripts/agents_langgraph.py tools
 
 # デモモード（サンプル質問のテスト）
-python scripts/langgraph_agent.py demo
+uv run python scripts/agents_langgraph.py demo
 ```
 
 #### API エンドポイント

@@ -47,7 +47,7 @@ class LLMFactory:
         """Create LLM provider instance."""
         if provider_name not in cls._providers:
             raise ValueError(f"Unknown provider: {provider_name}")
-        
+
         return cls._providers[provider_name]()
 
     @classmethod
