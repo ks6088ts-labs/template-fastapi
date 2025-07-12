@@ -11,7 +11,7 @@ from fastapi import FastAPI
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.trace import Span
 
-from template_fastapi.routers import agents, chats, demos, files, foodies, games, items, speeches
+from template_fastapi.routers import agents, chats, demos, files, foodies, items, speeches
 
 app = FastAPI()
 
@@ -36,11 +36,54 @@ if AZURE_CONNECTION_STRING:
     FastAPIInstrumentor.instrument_app(app)
 
 # Include routers
-app.include_router(items.router)
-app.include_router(demos.router)
-app.include_router(games.router)
-app.include_router(foodies.router)
-app.include_router(files.router)
-app.include_router(speeches.router)
-app.include_router(chats.router)
-app.include_router(agents.router)
+# Routers configuration list
+routersConfig = [
+    {
+        "router": agents.router,
+        "prefix": "/agents",
+        "tags": ["agents"],
+    },
+    {
+        "router": chats.router,
+        "prefix": "/chats",
+        "tags": ["chats"],
+    },
+    {
+        "router": demos.router,
+        "prefix": "/demos",
+        "tags": ["demos"],
+    },
+    {
+        "router": files.router,
+        "prefix": "/files",
+        "tags": ["files"],
+    },
+    {
+        "router": foodies.router,
+        "prefix": "/foodies",
+        "tags": ["foodies"],
+    },
+    {
+        "router": items.router,
+        "prefix": "/items",
+        "tags": ["items"],
+    },
+    {
+        "router": speeches.router,
+        "prefix": "/speeches",
+        "tags": ["speeches"],
+    },
+]
+
+# Include routers using a loop
+for routerConfig in routersConfig:
+    app.include_router(
+        router=routerConfig["router"],
+        prefix=routerConfig["prefix"],
+        tags=routerConfig["tags"],
+        responses={
+            404: {
+                "description": "Not found",
+            },
+        },
+    )

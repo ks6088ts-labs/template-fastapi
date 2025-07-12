@@ -15,9 +15,8 @@ speech_repo = SpeechRepository()
 
 
 @router.post(
-    "/speeches/transcriptions/",
+    "/transcriptions/",
     response_model=BatchTranscriptionResponse,
-    tags=["speeches"],
     operation_id="create_transcription_job",
 )
 async def create_transcription_job(request: BatchTranscriptionRequest) -> BatchTranscriptionResponse:
@@ -31,9 +30,8 @@ async def create_transcription_job(request: BatchTranscriptionRequest) -> BatchT
 
 
 @router.get(
-    "/speeches/transcriptions/{job_id}",
+    "/transcriptions/{job_id}",
     response_model=TranscriptionJob,
-    tags=["speeches"],
     operation_id="get_transcription_job",
 )
 async def get_transcription_job(job_id: str) -> TranscriptionJob:
@@ -47,9 +45,8 @@ async def get_transcription_job(job_id: str) -> TranscriptionJob:
 
 
 @router.get(
-    "/speeches/transcriptions/{job_id}/files",
+    "/transcriptions/{job_id}/files",
     response_model=list[dict[str, Any]],
-    tags=["speeches"],
     operation_id="get_transcription_files",
 )
 async def get_transcription_files(job_id: str) -> list[dict[str, Any]]:
@@ -63,9 +60,8 @@ async def get_transcription_files(job_id: str) -> list[dict[str, Any]]:
 
 
 @router.get(
-    "/speeches/transcriptions/{job_id}/result",
+    "/transcriptions/{job_id}/result",
     response_model=TranscriptionContent,
-    tags=["speeches"],
     operation_id="get_transcription_result",
 )
 async def get_transcription_result(
@@ -81,8 +77,7 @@ async def get_transcription_result(
 
 
 @router.delete(
-    "/speeches/transcriptions/{job_id}",
-    tags=["speeches"],
+    "/transcriptions/{job_id}",
     operation_id="delete_transcription_job",
 )
 async def delete_transcription_job(job_id: str) -> dict:
@@ -100,9 +95,8 @@ async def delete_transcription_job(job_id: str) -> dict:
 
 
 @router.get(
-    "/speeches/transcriptions/",
+    "/transcriptions/",
     response_model=list[TranscriptionJob],
-    tags=["speeches"],
     operation_id="list_transcription_jobs",
 )
 async def list_transcription_jobs() -> list[TranscriptionJob]:
