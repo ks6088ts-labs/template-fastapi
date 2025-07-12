@@ -6,7 +6,7 @@ from template_fastapi.repositories.items import items_db
 router = APIRouter()
 
 
-@router.get("/items/", response_model=list[Item], tags=["items"], operation_id="list_items")
+@router.get("/", response_model=list[Item], operation_id="list_items")
 async def list_items(skip: int = 0, limit: int = 10):
     """
     List all items in the database.
@@ -16,7 +16,7 @@ async def list_items(skip: int = 0, limit: int = 10):
     return list(items_db.values())[skip : skip + limit]
 
 
-@router.get("/items/{item_id}", response_model=Item, tags=["items"], operation_id="get_item")
+@router.get("/{item_id}", response_model=Item, operation_id="get_item")
 async def read_item(item_id: int):
     """
     Get a specific item by its ID.
@@ -28,7 +28,7 @@ async def read_item(item_id: int):
     return items_db[item_id]
 
 
-@router.post("/items/", response_model=Item, tags=["items"], operation_id="create_item")
+@router.post("/", response_model=Item, operation_id="create_item")
 async def create_item(item: Item):
     """
     Create a new item in the database.
@@ -39,7 +39,7 @@ async def create_item(item: Item):
     return item
 
 
-@router.put("/items/{item_id}", response_model=Item, tags=["items"], operation_id="update_item")
+@router.put("/{item_id}", response_model=Item, operation_id="update_item")
 async def update_item(item_id: int, item: Item):
     """
     Update an existing item.
@@ -54,7 +54,7 @@ async def update_item(item_id: int, item: Item):
     return item
 
 
-@router.delete("/items/{item_id}", tags=["items"], operation_id="delete_item")
+@router.delete("/{item_id}", operation_id="delete_item")
 async def delete_item(item_id: int):
     """
     Delete an item from the database.
@@ -68,7 +68,7 @@ async def delete_item(item_id: int):
     return {"message": "Item deleted successfully"}
 
 
-@router.get("/items/search/", response_model=list[Item], tags=["search"], operation_id="search_items")
+@router.get("/search/", response_model=list[Item], tags=["search"], operation_id="search_items")
 async def search_items(
     q: str | None = Query(None, description="Search query string"),
     min_price: float | None = Query(None, description="Minimum price"),

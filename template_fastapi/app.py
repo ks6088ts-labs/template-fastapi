@@ -36,7 +36,18 @@ if AZURE_CONNECTION_STRING:
     FastAPIInstrumentor.instrument_app(app)
 
 # Include routers
-app.include_router(items.router)
+app.include_router(
+    router=items.router,
+    prefix="/items",
+    tags=[
+        "items",
+    ],
+    responses={
+        404: {
+            "description": "Not found",
+        },
+    },
+)
 app.include_router(demos.router)
 app.include_router(games.router)
 app.include_router(foodies.router)
