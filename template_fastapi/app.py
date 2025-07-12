@@ -50,8 +50,30 @@ app.include_router(
 )
 app.include_router(demos.router)
 app.include_router(games.router)
-app.include_router(foodies.router)
+app.include_router(
+    router=foodies.router,
+    prefix="/foodies",
+    tags=[
+        "foodies",
+    ],
+    responses={
+        404: {
+            "description": "Not found",
+        },
+    },
+)
 app.include_router(files.router)
-app.include_router(speeches.router)
+app.include_router(
+    router=speeches.router,
+    prefix="/speeches",
+    tags=[
+        "speeches",
+    ],
+    responses={
+        404: {
+            "description": "Not found",
+        },
+    },
+)
 app.include_router(chats.router)
 app.include_router(agents.router)

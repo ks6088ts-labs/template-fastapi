@@ -8,9 +8,8 @@ restaurant_repo = RestaurantRepository()
 
 
 @router.get(
-    "/foodies/restaurants/",
+    "/restaurants/",
     response_model=list[Restaurant],
-    tags=["foodies"],
     operation_id="list_foodies_restaurants",
 )
 async def list_foodies_restaurants(
@@ -27,9 +26,8 @@ async def list_foodies_restaurants(
 
 
 @router.get(
-    "/foodies/restaurants/{restaurant_id}",
+    "/restaurants/{restaurant_id}",
     response_model=Restaurant,
-    tags=["foodies"],
     operation_id="get_foodies_restaurant",
 )
 async def get_foodies_restaurant(restaurant_id: str) -> Restaurant:
@@ -43,9 +41,8 @@ async def get_foodies_restaurant(restaurant_id: str) -> Restaurant:
 
 
 @router.post(
-    "/foodies/restaurants/",
+    "/restaurants/",
     response_model=Restaurant,
-    tags=["foodies"],
     operation_id="create_foodies_restaurant",
 )
 async def create_foodies_restaurant(restaurant: Restaurant) -> Restaurant:
@@ -59,9 +56,8 @@ async def create_foodies_restaurant(restaurant: Restaurant) -> Restaurant:
 
 
 @router.put(
-    "/foodies/restaurants/{restaurant_id}",
+    "/restaurants/{restaurant_id}",
     response_model=Restaurant,
-    tags=["foodies"],
     operation_id="update_foodies_restaurant",
 )
 async def update_foodies_restaurant(restaurant_id: str, restaurant: Restaurant) -> Restaurant:
@@ -82,8 +78,7 @@ async def update_foodies_restaurant(restaurant_id: str, restaurant: Restaurant) 
 
 
 @router.delete(
-    "/foodies/restaurants/{restaurant_id}",
-    tags=["foodies"],
+    "/restaurants/{restaurant_id}",
     operation_id="delete_foodies_restaurant",
 )
 async def delete_foodies_restaurant(restaurant_id: str) -> dict:
@@ -98,9 +93,8 @@ async def delete_foodies_restaurant(restaurant_id: str) -> dict:
 
 
 @router.get(
-    "/foodies/restaurants/search/",
+    "/restaurants/search/",
     response_model=list[Restaurant],
-    tags=["foodies"],
     operation_id="search_foodies_restaurants",
 )
 async def search_foodies_restaurants(
@@ -118,9 +112,8 @@ async def search_foodies_restaurants(
 
 
 @router.get(
-    "/foodies/restaurants/near/",
+    "/restaurants/near/",
     response_model=list[Restaurant],
-    tags=["foodies"],
     operation_id="find_nearby_restaurants",
 )
 async def find_nearby_restaurants(
