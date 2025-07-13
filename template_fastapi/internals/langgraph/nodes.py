@@ -2,9 +2,13 @@
 
 from langchain_core.messages import ToolMessage
 
+from template_fastapi.settings.logging import get_logger
+
 from .llms import LLMFactory
 from .states import AgentState
 from .tools import get_tools
+
+logger = get_logger(__name__)
 
 
 def agent_node(state: AgentState) -> dict:
@@ -68,6 +72,7 @@ def tool_node(state: AgentState) -> dict:
                 tool = tools_by_name[tool_name]
                 try:
                     result = tool.invoke(tool_args)
+                    logger.info(f"Executed {tool_name} with args {tool_args}: {result}")
                     tool_messages.append(
                         ToolMessage(
                             content=str(result),

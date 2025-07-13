@@ -64,8 +64,8 @@ def test_current_time_tool():
     assert "Current time (UTC):" in result
 
     # Test with timezone parameter
-    result = time_tool._run("JST")
-    assert "Current time (JST):" in result
+    result = time_tool._run("Asia/Tokyo")
+    assert "Current time (Asia/Tokyo):" in result
 
 
 def test_search_tool():

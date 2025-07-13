@@ -1,6 +1,7 @@
 """Tools for LangGraph agent."""
 
-import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from langchain_core.tools import BaseTool
 from pydantic import BaseModel, Field
@@ -33,7 +34,9 @@ class CurrentTimeTool(BaseTool):
 
     def _run(self, timezone: str = "UTC") -> str:
         """Get current time."""
-        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+        tz = ZoneInfo(timezone)
+        now_in_tz = datetime.now(tz)
+        current_time = now_in_tz.strftime("%Y-%m-%d %H:%M:%S %Z%z")
         return f"Current time ({timezone}): {current_time}"
 
 

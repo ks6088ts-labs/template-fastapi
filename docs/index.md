@@ -110,7 +110,7 @@ AI agents with custom tools for calculations, time queries, and web search.
 uv run python scripts/agents_langgraph.py interactive
 
 # Single query
-uv run python scripts/agents_langgraph.py chat "What time is it?"
+uv run python scripts/agents_langgraph.py chat "京都の今の時間から12時間後は何時？"
 
 # Available tools
 uv run python scripts/agents_langgraph.py tools
