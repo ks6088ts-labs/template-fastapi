@@ -2,24 +2,29 @@
 
 import logging
 import logging.config
+from functools import lru_cache
 from typing import Any
 
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class LoggingSettings(BaseSettings):
+class Settings(BaseSettings):
     """Logging configuration settings."""
 
     log_level: str = Field(default="INFO", description="Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)")
 
-    class Config:
-        env_prefix = ""  # No prefix, so we can use LOG_LEVEL directly
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_ignore_empty=True,
+        extra="ignore",
+    )
 
 
-def get_logging_settings() -> LoggingSettings:
+@lru_cache
+def get_logging_settings() -> Settings:
     """Get logging settings."""
-    return LoggingSettings()
+    return Settings()
 
 
 def configure_logging() -> None:
