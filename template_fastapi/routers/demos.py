@@ -33,7 +33,7 @@ async def flaky(failure_rate: int):
     The failure rate is a percentage (0-100) that determines the likelihood of failure.
     """
     logger.debug(f"Flaky endpoint called with failure rate: {failure_rate}")
-    
+
     if not (0 <= failure_rate <= 100):
         logger.error(f"Invalid failure rate: {failure_rate}")
         raise HTTPException(
@@ -63,7 +63,7 @@ async def heavy_sync_with_sleep(sleep_ms: int):
     This simulates a long-running synchronous operation.
     """
     logger.info(f"Heavy sync endpoint called with sleep time: {sleep_ms}ms")
-    
+
     if sleep_ms < 0:
         logger.error(f"Invalid sleep time: {sleep_ms}")
         raise HTTPException(
@@ -76,7 +76,7 @@ async def heavy_sync_with_sleep(sleep_ms: int):
         time.sleep(sleep_ms / 1000.0)
         with tracer.start_as_current_span("child"):
             logger.debug("Child span execution")
-    
+
     logger.info(f"Completed sleep operation for {sleep_ms}ms")
     return {
         "message": f"Slept for {sleep_ms} milliseconds",

@@ -1,6 +1,5 @@
 """Tests for demos router."""
 
-import pytest
 from fastapi.testclient import TestClient
 
 from template_fastapi.app import app

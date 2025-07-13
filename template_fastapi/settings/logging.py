@@ -2,10 +2,9 @@
 
 import logging
 import logging.config
-import os
-from typing import Dict, Any
+from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
@@ -26,15 +25,15 @@ def get_logging_settings() -> LoggingSettings:
 def configure_logging() -> None:
     """Configure application logging."""
     settings = get_logging_settings()
-    
+
     # Validate log level
     log_level = settings.log_level.upper()
     valid_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     if log_level not in valid_levels:
         log_level = "INFO"
-    
+
     # Configure logging
-    logging_config: Dict[str, Any] = {
+    logging_config: dict[str, Any] = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
@@ -76,7 +75,7 @@ def configure_logging() -> None:
             "handlers": ["console"],
         },
     }
-    
+
     logging.config.dictConfig(logging_config)
 
 

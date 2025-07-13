@@ -1,3 +1,9 @@
+[![test](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/test.yaml?query=branch%3Amain)
+[![docker](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/docker.yaml/badge.svg?branch=main)](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/docker.yaml?query=branch%3Amain)
+[![docker-release](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/docker-release.yaml/badge.svg)](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/docker-release.yaml)
+[![ghcr-release](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/ghcr-release.yaml/badge.svg)](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/ghcr-release.yaml)
+[![docs](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/github-pages.yaml/badge.svg)](https://github.com/ks6088ts-labs/template-fastapi/actions/workflows/github-pages.yaml)
+
 # template-fastapi
 
 A comprehensive FastAPI template with Azure cloud services integration, Agent-based workflows, and multi-service API architecture.
@@ -24,7 +30,7 @@ A comprehensive FastAPI template with Azure cloud services integration, Agent-ba
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/ks6088ts-labs/template-fastapi.git
 cd template-fastapi
 
 # Install dependencies
@@ -56,17 +62,20 @@ The API will be available at http://localhost:8000 with interactive documentatio
 ## API Services
 
 ### Core Services
+
 - **Items API** (`/items/`): CRUD operations for item management
 - **Files API** (`/files/`): File upload, download, and management with Azure Blob Storage
 - **Restaurants API** (`/foodies/`): Restaurant discovery with geospatial search
 - **Speech API** (`/speeches/`): Batch transcription jobs using Azure AI Speech
 
 ### Agent Services
+
 - **LangGraph Agents** (`/agents/langgraph/`): AI agents with custom tools
 - **Azure AI Foundry** (`/agents/azure-ai-foundry/`): Thread-based conversations
 - **Chat Interface** (`/chats/`): Real-time WebSocket chat with agent integration
 
 ### Demo & Utilities
+
 - **Demo Endpoints** (`/demos/`): Dice rolling, flaky endpoints for testing
 - **Health & Monitoring**: Application Insights integration with OpenTelemetry
 
@@ -103,9 +112,6 @@ make docker-build
 
 # Run container
 docker run -p 8000:8000 --env-file .env ks6088ts/template-fastapi:latest
-
-# Docker Compose (if available)
-docker-compose up
 ```
 
 ## Development

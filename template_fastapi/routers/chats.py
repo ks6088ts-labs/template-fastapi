@@ -37,12 +37,12 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     try:
         await chat_repository.manager.connect(websocket)
         logger.info(f"WebSocket connected successfully for client {client_id}")
-        
+
         while True:
             data = await websocket.receive_text()
             logger.debug(f"Received message from client {client_id}: {data[:100]}...")  # Log first 100 chars
             await chat_repository.handle_client_message(data, websocket, client_id)
-            
+
     except WebSocketDisconnect:
         logger.info(f"WebSocket disconnected for client {client_id}")
         chat_repository.manager.disconnect(websocket)

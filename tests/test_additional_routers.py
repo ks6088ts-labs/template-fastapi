@@ -1,6 +1,5 @@
 """Tests for additional routers - basic endpoint availability tests."""
 
-import pytest
 from fastapi.testclient import TestClient
 
 from template_fastapi.app import app
