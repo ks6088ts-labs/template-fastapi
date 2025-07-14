@@ -38,7 +38,7 @@ if AZURE_CONNECTION_STRING:
 
     configure_azure_monitor(
         connection_string=AZURE_CONNECTION_STRING,
-        # enable_live_metrics=True,
+        enable_live_metrics=True,
         server_request_hook=server_request_hook,
     )
     FastAPIInstrumentor.instrument_app(app)
