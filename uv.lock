@@ -345,7 +345,7 @@ wheels = [
 
 [[package]]
 name = "azure-monitor-opentelemetry"
-version = "1.6.10"
+version = "1.6.11"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-core" },
@@ -361,14 +361,14 @@ dependencies = [
     { name = "opentelemetry-resource-detector-azure" },
     { name = "opentelemetry-sdk" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5b/d0/6c315ddec1490989404cbf21909c232e9e5285b1117972ed488d7d2d7f46/azure_monitor_opentelemetry-1.6.10.tar.gz", hash = "sha256:1f8145f665abb1626ac1caf14f75fc9b4fc43b818694798f7a43ea369e265683", size = 48990, upload-time = "2025-05-30T18:28:22.148Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/91/9b1b9f65f325a55bcd2a46540408b061986c54b16670e332483b5461ab0f/azure_monitor_opentelemetry-1.6.11.tar.gz", hash = "sha256:37908b06509be61fd045357f455b3c906d8b97ebfa7e8e34890fe9d554fa8e71", size = 49942, upload-time = "2025-07-18T13:40:27.633Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8c/f9/762e29bcb2c05ec24bee39f28f20e95d0efab57ea3edcc591422308570d6/azure_monitor_opentelemetry-1.6.10-py3-none-any.whl", hash = "sha256:8b5953454f72da42f7959a8017e5f9712427b931d1d08be008d32722c4605a0d", size = 25274, upload-time = "2025-05-30T18:28:23.167Z" },
+    { url = "https://files.pythonhosted.org/packages/25/75/e51c90bcd1b31f771ba87c90721c532d116da7ccb971ea894740d50ef900/azure_monitor_opentelemetry-1.6.11-py3-none-any.whl", hash = "sha256:88e6c151705e8fd5c54821ecabee8d70db72548ec5536b8358f673d6640c5801", size = 25534, upload-time = "2025-07-18T13:40:28.856Z" },
 ]
 
 [[package]]
 name = "azure-monitor-opentelemetry-exporter"
-version = "1.0.0b39"
+version = "1.0.0b40"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-core" },
@@ -379,9 +379,9 @@ dependencies = [
     { name = "opentelemetry-sdk" },
     { name = "psutil" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/49/70/3d8bcd1ed71ff23233cd1f600ad9b3527a18bae7d95dccadd606ed0ea8e2/azure_monitor_opentelemetry_exporter-1.0.0b39.tar.gz", hash = "sha256:c28f5f56261ad40ab69eb00ba4e60d50417ec30e343afccc65c5c89ba4056087", size = 193192, upload-time = "2025-06-27T16:49:15.176Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/82/b7e438cb3e8eb179a7f8933431c76790a29d926522944dcef97f62312a7a/azure_monitor_opentelemetry_exporter-1.0.0b40.tar.gz", hash = "sha256:4727aff433df0fe991cb98a8a7d51358d67bc59908ddd9c024b2e916c854053b", size = 201312, upload-time = "2025-07-17T21:51:37.078Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/a4/8b7fe3ad137516ff6d2fa7b8662ada88f6ef8408f93ccf81e3e569469fee/azure_monitor_opentelemetry_exporter-1.0.0b39-py2.py3-none-any.whl", hash = "sha256:22419084272affeb117e47abd7420a4040ae370ee844c0167ccbc77c26490cc3", size = 155944, upload-time = "2025-06-27T16:49:16.739Z" },
+    { url = "https://files.pythonhosted.org/packages/32/74/2eaa35844ecad4f053a4ef00a586b08307c63613244a51e9ce756b2e0cbe/azure_monitor_opentelemetry_exporter-1.0.0b40-py2.py3-none-any.whl", hash = "sha256:304fcda99499fb679e701d0bd034e3a8787b146548fd05154056fd0453796303", size = 159995, upload-time = "2025-07-17T21:51:38.568Z" },
 ]
 
 [[package]]
@@ -850,7 +850,7 @@ name = "exceptiongroup"
 version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0b/9f/a65090624ecf468cdca03533906e7c69ed7588582240cfe7cc9e770b50eb/exceptiongroup-1.3.0.tar.gz", hash = "sha256:b241f5885f560bc56a59ee63ca4c6a8bfa46ae4ad651af316d4e81817bb9fd88", size = 29749, upload-time = "2025-05-10T17:42:51.123Z" }
 wheels = [
