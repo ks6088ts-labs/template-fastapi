@@ -31,6 +31,21 @@ make dev
 
 The application will be available at http://localhost:8000 with interactive API documentation at http://localhost:8000/docs.
 
+### Docker Setup
+
+See [ks6088ts/template-fastapi](https://hub.docker.com/r/ks6088ts/template-fastapi) for Docker images.
+
+```shell
+# Configure environment
+cp .env.template .env
+# Edit .env with your Azure service credentials
+
+# Run Docker container
+docker run --rm -p 8000:8000 \
+  --volume "$PWD/.env:/app/.env" \
+  ks6088ts/template-fastapi:latest
+```
+
 ## Architecture Overview
 
 For detailed architecture information, see:
