@@ -1,5 +1,5 @@
+import asyncio
 import random
-import time
 
 from fastapi import APIRouter, HTTPException
 
@@ -73,10 +73,9 @@ async def heavy_sync_with_sleep(sleep_ms: int):
 
     with tracer.start_as_current_span("parent"):
         logger.debug(f"Starting sleep for {sleep_ms} milliseconds")
-        time.sleep(sleep_ms / 1000.0)
+        await asyncio.sleep(sleep_ms / 1000.0)  # Convert milliseconds to seconds
         with tracer.start_as_current_span("child"):
             logger.debug("Child span execution")
-
     logger.info(f"Completed sleep operation for {sleep_ms}ms")
     return {
         "message": f"Slept for {sleep_ms} milliseconds",
