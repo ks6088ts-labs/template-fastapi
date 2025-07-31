@@ -1,0 +1,990 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>External specification - template-fastapi</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-0ZTKFXVQ5K"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-0ZTKFXVQ5K",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-0ZTKFXVQ5K",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#external-api-specification" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="template-fastapi" class="md-header__button md-logo" aria-label="template-fastapi" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            template-fastapi
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              External specification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ks6088ts-labs/template-fastapi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ks6088ts-labs/template-fastapi
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="template-fastapi" class="md-nav__button md-logo" aria-label="template-fastapi" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    template-fastapi
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ks6088ts-labs/template-fastapi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ks6088ts-labs/template-fastapi
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Services
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-items-management-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Items Management API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-file-management-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. File Management API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-restaurant-discovery-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Restaurant Discovery API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-speech-transcription-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Speech Transcription API
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-agent-based-conversation-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Agent-Based Conversation API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Agent-Based Conversation API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#langgraph-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      LangGraph Agents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-ai-foundry-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure AI Foundry Agents
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-real-time-chat-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Real-time Chat Interface
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-demo-testing-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Demo &amp; Testing API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#azure-cloud-services-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Cloud Services Integration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Azure Cloud Services Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#azure-cosmosdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure CosmosDB
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-blob-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Blob Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-openai-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure OpenAI Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-ai-speech" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure AI Speech
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-ai-foundry" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure AI Foundry
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#azure-application-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      Azure Application Insights
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication &amp; Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication &amp; Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#production-recommendations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Recommendations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Error Handling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standard-http-status-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standard HTTP Status Codes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-response-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Response Format
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring &amp; Observability
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring &amp; Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#structured-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structured Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics &amp; Tracing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Checks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-versioning-compatibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Versioning &amp; Compatibility
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Versioning &amp; Compatibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      Current Version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#future-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Future Considerations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<blockquote>
+<p>[!CAUTION]
+These design documents are generated by AI and may not be fully accurate or complete. They are intended to provide a starting point for understanding the system architecture and design patterns used in the template-fastapi application.</p>
+</blockquote>
+<h1 id="external-api-specification">External API Specification</h1>
+<h2 id="overview">Overview</h2>
+<p>The template-fastapi application provides a comprehensive REST API built with FastAPI, integrating multiple Azure cloud services to deliver enterprise-grade functionality for content management, AI-powered conversations, and data processing.</p>
+<h2 id="api-services">API Services</h2>
+<h3 id="1-items-management-api">1. Items Management API</h3>
+<p><strong>Base Path</strong>: <code>/items/</code></p>
+<p><strong>Purpose</strong>: Core CRUD operations for item management with Azure CosmosDB backend.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /items/</code> - List all items with pagination</li>
+<li><code>GET /items/{item_id}</code> - Retrieve specific item</li>
+<li><code>POST /items/</code> - Create new item</li>
+<li><code>PUT /items/{item_id}</code> - Update existing item</li>
+<li><code>DELETE /items/{item_id}</code> - Delete item</li>
+<li><code>GET /items/search/?q={query}</code> - Search items by text</li>
+</ul>
+<p><strong>Data Model</strong>:</p>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;price&quot;: 0.0,
+  &quot;tax&quot;: 0.0
+}
+</code></pre>
+<h3 id="2-file-management-api">2. File Management API</h3>
+<p><strong>Base Path</strong>: <code>/files/</code></p>
+<p><strong>Purpose</strong>: File upload, storage, and retrieval using Azure Blob Storage.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /files/</code> - List files with optional prefix filter</li>
+<li><code>POST /files/upload</code> - Upload single file</li>
+<li><code>POST /files/upload-multiple</code> - Upload multiple files</li>
+<li><code>GET /files/{filename}</code> - Download file</li>
+<li><code>GET /files/{filename}/info</code> - Get file metadata</li>
+<li><code>DELETE /files/{filename}</code> - Delete single file</li>
+<li><code>DELETE /files/</code> - Delete multiple files (request body)</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Automatic content type detection</li>
+<li>File metadata tracking</li>
+<li>Bulk operations support</li>
+</ul>
+<h3 id="3-restaurant-discovery-api">3. Restaurant Discovery API</h3>
+<p><strong>Base Path</strong>: <code>/foodies/restaurants/</code></p>
+<p><strong>Purpose</strong>: Restaurant management with geospatial search capabilities.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /restaurants/</code> - List restaurants with pagination</li>
+<li><code>GET /restaurants/{id}</code> - Get restaurant details</li>
+<li><code>POST /restaurants/</code> - Create new restaurant</li>
+<li><code>PUT /restaurants/{id}</code> - Update restaurant</li>
+<li><code>DELETE /restaurants/{id}</code> - Delete restaurant</li>
+<li><code>GET /restaurants/search/?query={text}</code> - Vector-based text search</li>
+<li><code>GET /restaurants/near/?latitude={lat}&amp;longitude={lng}</code> - Geospatial proximity search</li>
+</ul>
+<p><strong>Search Features</strong>:</p>
+<ul>
+<li>Text-based vector search using embeddings</li>
+<li>Location-based proximity search with configurable radius</li>
+<li>Pagination support for all list operations</li>
+</ul>
+<h3 id="4-speech-transcription-api">4. Speech Transcription API</h3>
+<p><strong>Base Path</strong>: <code>/speeches/transcriptions/</code></p>
+<p><strong>Purpose</strong>: Batch audio transcription using Azure AI Speech Services.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /transcriptions/</code> - List all transcription jobs</li>
+<li><code>POST /transcriptions/</code> - Create transcription job</li>
+<li><code>GET /transcriptions/{job_id}</code> - Get job status</li>
+<li><code>GET /transcriptions/{job_id}/files</code> - List result files</li>
+<li><code>GET /transcriptions/{job_id}/result?file_url={url}</code> - Get transcription result</li>
+<li><code>DELETE /transcriptions/{job_id}</code> - Delete job</li>
+</ul>
+<p><strong>Workflow</strong>:</p>
+<ol>
+<li>Submit audio URLs for batch processing</li>
+<li>Monitor job status (Created → Running → Succeeded/Failed)</li>
+<li>Retrieve transcription results when complete</li>
+</ol>
+<h3 id="5-agent-based-conversation-api">5. Agent-Based Conversation API</h3>
+<h4 id="langgraph-agents">LangGraph Agents</h4>
+<p><strong>Base Path</strong>: <code>/agents/langgraph/</code></p>
+<p><strong>Purpose</strong>: AI agents with custom tools for mathematical calculations, web search, and time queries.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /tools</code> - List available agent tools</li>
+</ul>
+<p><strong>Available Tools</strong>:</p>
+<ul>
+<li>Calculator: Mathematical expression evaluation</li>
+<li>Current Time: Timezone-aware time queries</li>
+<li>Search: Web search capabilities</li>
+</ul>
+<h4 id="azure-ai-foundry-agents">Azure AI Foundry Agents</h4>
+<p><strong>Base Path</strong>: <code>/agents/azure-ai-foundry/</code></p>
+<p><strong>Purpose</strong>: Thread-based conversational AI using Azure AI Foundry platform.</p>
+<p><strong>Agent Management</strong>:</p>
+<ul>
+<li><code>GET /</code> - List agents</li>
+<li><code>POST /</code> - Create agent</li>
+<li><code>GET /{agent_id}</code> - Get agent details</li>
+<li><code>DELETE /{agent_id}</code> - Delete agent</li>
+<li><code>POST /{agent_id}/chat</code> - Chat with agent</li>
+</ul>
+<p><strong>Thread Management</strong>:</p>
+<ul>
+<li><code>GET /threads/</code> - List conversation threads</li>
+<li><code>POST /threads/</code> - Create new thread</li>
+<li><code>GET /threads/{thread_id}</code> - Get thread details</li>
+<li><code>DELETE /threads/{thread_id}</code> - Delete thread</li>
+</ul>
+<h3 id="6-real-time-chat-interface">6. Real-time Chat Interface</h3>
+<p><strong>Base Path</strong>: <code>/chats/</code></p>
+<p><strong>Purpose</strong>: WebSocket-based real-time chat with HTML interface.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /</code> - Chat interface (HTML page)</li>
+<li><code>WebSocket /ws/{client_id}</code> - Real-time messaging</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Real-time bidirectional communication</li>
+<li>Multi-client support</li>
+<li>Agent integration capabilities</li>
+</ul>
+<h3 id="7-demo-testing-api">7. Demo &amp; Testing API</h3>
+<p><strong>Base Path</strong>: <code>/demos/</code></p>
+<p><strong>Purpose</strong>: Demonstration endpoints for testing and monitoring.</p>
+<p><strong>Endpoints</strong>:</p>
+<ul>
+<li><code>GET /roll_dice</code> - Random dice roll (1-6)</li>
+<li><code>GET /flaky/{failure_rate}</code> - Configurable failure simulation (0-100%)</li>
+<li><code>GET /flaky/exception</code> - Guaranteed exception endpoint</li>
+<li><code>GET /heavy_sync/{sleep_ms}</code> - Simulated heavy processing</li>
+</ul>
+<h2 id="azure-cloud-services-integration">Azure Cloud Services Integration</h2>
+<h3 id="azure-cosmosdb">Azure CosmosDB</h3>
+<ul>
+<li><strong>Purpose</strong>: Primary database for items and restaurant data</li>
+<li><strong>Features</strong>: Global distribution, automatic scaling, vector search support</li>
+<li><strong>Configuration</strong>: Connection string in <code>AZURE_COSMOSDB_CONNECTION_STRING</code></li>
+</ul>
+<h3 id="azure-blob-storage">Azure Blob Storage</h3>
+<ul>
+<li><strong>Purpose</strong>: File storage and management</li>
+<li><strong>Features</strong>: Hierarchical namespace, metadata support, CDN integration</li>
+<li><strong>Configuration</strong>: Connection string in <code>AZURE_BLOB_STORAGE_CONNECTION_STRING</code></li>
+</ul>
+<h3 id="azure-openai-service">Azure OpenAI Service</h3>
+<ul>
+<li><strong>Purpose</strong>: LLM capabilities for agents and embeddings</li>
+<li><strong>Models</strong>: GPT-4o for chat, text-embedding-3-small for search</li>
+<li><strong>Configuration</strong>: Endpoint and API key in environment variables</li>
+</ul>
+<h3 id="azure-ai-speech">Azure AI Speech</h3>
+<ul>
+<li><strong>Purpose</strong>: Batch audio transcription</li>
+<li><strong>Features</strong>: Multi-language support, custom vocabulary, speaker diarization</li>
+<li><strong>Configuration</strong>: API key and endpoint in environment variables</li>
+</ul>
+<h3 id="azure-ai-foundry">Azure AI Foundry</h3>
+<ul>
+<li><strong>Purpose</strong>: Enterprise AI agent platform</li>
+<li><strong>Features</strong>: Thread-based conversations, tool integration, model selection</li>
+<li><strong>Configuration</strong>: Project endpoint and API key</li>
+</ul>
+<h3 id="azure-application-insights">Azure Application Insights</h3>
+<ul>
+<li><strong>Purpose</strong>: Application monitoring and telemetry</li>
+<li><strong>Features</strong>: Request tracing, performance monitoring, custom metrics</li>
+<li><strong>Configuration</strong>: Connection string enables automatic instrumentation</li>
+</ul>
+<h2 id="authentication-security">Authentication &amp; Security</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<ul>
+<li>No authentication required (template/development setup)</li>
+<li>Internal service-to-service authentication via API keys</li>
+<li>Azure services authenticate via connection strings</li>
+</ul>
+<h3 id="production-recommendations">Production Recommendations</h3>
+<ul>
+<li>Implement OAuth 2.0 / JWT authentication</li>
+<li>Use Azure Active Directory integration</li>
+<li>Enable API rate limiting</li>
+<li>Configure CORS policies</li>
+<li>Use Azure Key Vault for secrets management</li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="standard-http-status-codes">Standard HTTP Status Codes</h3>
+<ul>
+<li><code>200</code> - Success</li>
+<li><code>201</code> - Created</li>
+<li><code>400</code> - Bad Request (validation errors)</li>
+<li><code>404</code> - Not Found</li>
+<li><code>422</code> - Unprocessable Entity (Pydantic validation)</li>
+<li><code>500</code> - Internal Server Error</li>
+</ul>
+<h3 id="error-response-format">Error Response Format</h3>
+<pre><code class="language-json">{
+  &quot;detail&quot;: &quot;Error description in Japanese/English&quot;,
+  &quot;type&quot;: &quot;error_type&quot;,
+  &quot;loc&quot;: [&quot;field&quot;, &quot;path&quot;] // For validation errors
+}
+</code></pre>
+<h2 id="monitoring-observability">Monitoring &amp; Observability</h2>
+<h3 id="structured-logging">Structured Logging</h3>
+<ul>
+<li>Configurable log levels via <code>LOG_LEVEL</code> environment variable</li>
+<li>JSON-structured logs for production deployment</li>
+<li>Request/response logging with correlation IDs</li>
+</ul>
+<h3 id="metrics-tracing">Metrics &amp; Tracing</h3>
+<ul>
+<li>OpenTelemetry integration with Azure Application Insights</li>
+<li>Custom metrics for business operations</li>
+<li>Distributed tracing across service boundaries</li>
+</ul>
+<h3 id="health-checks">Health Checks</h3>
+<ul>
+<li>Built-in FastAPI health monitoring</li>
+<li>Azure service dependency health checks</li>
+<li>Container readiness and liveness probes</li>
+</ul>
+<h2 id="api-versioning-compatibility">API Versioning &amp; Compatibility</h2>
+<h3 id="current-version">Current Version</h3>
+<ul>
+<li>API Version: 1.0</li>
+<li>No explicit versioning in URLs (future consideration)</li>
+<li>Backward compatibility maintained for minor updates</li>
+</ul>
+<h3 id="future-considerations">Future Considerations</h3>
+<ul>
+<li>URL-based versioning (<code>/v1/</code>, <code>/v2/</code>)</li>
+<li>Header-based versioning</li>
+<li>Feature flags for gradual rollouts</li>
+</ul>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/ks6088ts/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zM102.2 96a38.5 38.5 0 1 1 0 77 38.5 38.5 0 1 1 0-77m282.1 320h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ks6088ts" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/ks6088ts" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M357.2 48h70.6L273.6 224.2 455 464H313L201.7 318.6 74.5 464H3.8l164.9-188.5L-5.2 48h145.6l100.5 132.9zm-24.8 373.8h39.1L119.1 88h-42z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>
