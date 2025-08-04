@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.14'",
@@ -307,7 +307,7 @@ wheels = [
 
 [[package]]
 name = "azure-ai-projects"
-version = "1.0.0b12"
+version = "1.1.0b1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "azure-ai-agents" },
@@ -316,9 +316,9 @@ dependencies = [
     { name = "isodate" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/57/9a89c1978ec9ce29a3be454b83b66885982261762d7a436cad73c47c9225/azure_ai_projects-1.0.0b12.tar.gz", hash = "sha256:1a3784e4be6af3b0fc76e9e4a64158a38f6679fe3a1f8b9c33f12bc8914ae36c", size = 144358, upload-time = "2025-06-27T04:12:48.334Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/a6/9275619325b4ed96989a8afe37ea3289509ee5287385596934485282d24c/azure_ai_projects-1.1.0b1.tar.gz", hash = "sha256:4ec77055d7f2647d1c5681dbf4202df1e3398c174ce3690b02f868e69e58c2a5", size = 144756, upload-time = "2025-08-01T23:21:22.653Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/e4/50cd2c3bd5ab745e85a4a1bd591bf4343d6e3470580f1eadceed55fd57c0/azure_ai_projects-1.0.0b12-py3-none-any.whl", hash = "sha256:4e3d3ef275f7409ea8030e474626968848055d4b3717ff7ef03681da809c096f", size = 129783, upload-time = "2025-06-27T04:12:49.837Z" },
+    { url = "https://files.pythonhosted.org/packages/68/53/33ff49f4b48e9df4dbc8d0cf4e6dea75c47ee7b98144efcea6b0d617f63e/azure_ai_projects-1.1.0b1-py3-none-any.whl", hash = "sha256:f39b62301d532c153f9d19b272427581313c73bd7feb2e5559d08c6863929552", size = 125301, upload-time = "2025-08-01T23:21:23.99Z" },
 ]
 
 [[package]]
@@ -902,7 +902,7 @@ name = "exceptiongroup"
 version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0b/9f/a65090624ecf468cdca03533906e7c69ed7588582240cfe7cc9e770b50eb/exceptiongroup-1.3.0.tar.gz", hash = "sha256:b241f5885f560bc56a59ee63ca4c6a8bfa46ae4ad651af316d4e81817bb9fd88", size = 29749, upload-time = "2025-05-10T17:42:51.123Z" }
 wheels = [
