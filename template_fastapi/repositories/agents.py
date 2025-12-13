@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from azure.ai.agents.models import CodeInterpreterTool
 from azure.ai.projects import AIProjectClient
+from azure.ai.projects.models import CodeInterpreterTool, CodeInterpreterToolAuto
 from azure.identity import DefaultAzureCredential
 
 from template_fastapi.models.agent import (
@@ -17,7 +17,8 @@ from template_fastapi.models.agent import (
 )
 from template_fastapi.settings.azure_ai_foundry import get_azure_ai_foundry_settings
 
-code_interpreter = CodeInterpreterTool()
+# https://github.com/Azure/azure-sdk-for-python/blob/azure-ai-projects_2.0.0b2/sdk/ai/azure-ai-projects/samples/agents/tools/sample_agent_code_interpreter.py
+code_interpreter = CodeInterpreterTool(container=CodeInterpreterToolAuto(file_ids=[]))
 
 
 class AgentRepository:

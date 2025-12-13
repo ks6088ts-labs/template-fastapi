@@ -27,9 +27,7 @@ dependencies = [
 docs = [
     "mkdocs-material>=9.6.12",
 ]
-
-[tool.uv]
-dev-dependencies = [
+dev = [
     "coverage>=7.8.0",
     "jupyterlab>=4.4.2",
     "pre-commit>=4.2.0",
@@ -68,9 +66,9 @@ environment = { python-version = "3.10" }
 
 [tool.ty.rules]
 unresolved-attribute = "ignore" # Ignore unresolved attributes in classes
-possibly-unbound-attribute = "ignore" # Ignore possibly unbound attributes in classes
 unknown-argument = "ignore" # Ignore unknown arguments in function calls
 invalid-assignment = "ignore" # Ignore invalid assignments
 invalid-argument-type = "ignore" # Ignore invalid argument types
 invalid-return-type = "ignore" # Ignore invalid return types
 not-iterable = "ignore" # Ignore not iterable errors
+possibly-missing-attribute = "ignore" # Ignore possibly missing attributes in classes

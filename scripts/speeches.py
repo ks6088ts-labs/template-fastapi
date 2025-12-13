@@ -141,7 +141,7 @@ def get_transcription_result(
         # ファイルに保存
         if save_file:
             with open(save_file, "w", encoding="utf-8") as f:
-                json.dump(result.dict(), f, ensure_ascii=False, indent=2, default=str)
+                json.dump(result.model_dump(), f, ensure_ascii=False, indent=2, default=str)
             console.print(f"✅ 結果を {save_file} に保存しました")
 
     except Exception as e:
