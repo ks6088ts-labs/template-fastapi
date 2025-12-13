@@ -2,6 +2,7 @@ import asyncio
 import random
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import HTMLResponse
 
 from template_fastapi.opentelemetry import get_meter, get_tracer
 from template_fastapi.settings.logging import get_logger
@@ -98,3 +99,15 @@ async def roll_dice():
         logger.info(f"Dice rolled: {roll}")
         roll_counter.add(1, {"roll.value": str(roll)})
     return roll
+
+
+@router.get("/")
+async def htmx_demo():
+    return HTMLResponse("""
+        <html>
+            <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+            <button hx-get="/demos/roll_dice" hx-target="#result">
+                roll dice
+            </button>
+            <div id="result"></div>
+    """)
